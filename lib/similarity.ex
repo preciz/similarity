@@ -15,7 +15,20 @@ defmodule Similarity do
   end
 
   @doc """
-  Calculates Euclidean dot product of two vectors
+  Multiplies cosine similarity with the square root of compared vectors length.
+
+  srol = square root of length
+
+  This gives better comparable numbers in real life where the number of attributes compared might differ.
+
+  Use this if the number of shared attributes between real world objects differ.
+  """
+  def cosine_srol(list_a, list_b) do
+    cosine(list_a, list_b) * :math.sqrt(length(list_a))
+  end
+
+  @doc """
+  Calculates Euclidean dot product of two vectors.
 
   https://en.wikipedia.org/wiki/Euclidean_vector#Dot_product
   """
