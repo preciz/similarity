@@ -1,6 +1,6 @@
 defmodule Similarity.Cosine do
   @moduledoc """
-  A structure that can be used to accumulate attributes of
+  A structure that can be used to accumulate attributes and calcuate similarity between ids.
   """
 
   alias Similarity.Cosine
@@ -8,12 +8,12 @@ defmodule Similarity.Cosine do
   defstruct attributes_counter: 0, attributes_map: %{}, map: %{}
 
   @doc """
-  Returns a new Cosine struct, later to be filled up by &add/3 function
+  Returns a new Cosine struct to be first used with `add/3` function
   """
   def new, do: %Cosine{}
 
   @doc """
-  Puts a new id with attributes into %Cosine{}.map and returns %Cosine{} struct.
+  Puts a new id with attributes into `%Cosine{}.map` and returns `%Cosine{}` struct.
 
   Usage:
 
@@ -23,7 +23,8 @@ defmodule Similarity.Cosine do
   def add(struct = %Cosine{map: map}, id, attributes) do
     struct = %Cosine{attributes_map: attributes_map} = add_attributes(struct, attributes)
 
-    transformed_attributes = attributes |> Enum.map(fn {key, value} -> {Map.get(attributes_map, key), value} end)
+    transformed_attributes =
+      attributes |> Enum.map(fn {key, value} -> {Map.get(attributes_map, key), value} end)
 
     new_map = map |> Map.put(id, transformed_attributes)
 
@@ -31,30 +32,38 @@ defmodule Similarity.Cosine do
   end
 
   @doc """
-  Returns cosine_srol similarity between two pairs of ids (id_a, id_b)
+  Returns `Similarity.cosine_srol/2` similarity between two pairs of ids (id_a, id_b) in `%Cosine{}`
   """
   def between(%Cosine{map: map}, id_a, id_b) do
-    between(map, id_a, id_b)
+    do_between(map, id_a, id_b)
   end
 
-  @doc false
-  def between(map, id_a, id_b) do
+  defp do_between(map, id_a, id_b) do
     attributes_a = map |> Map.get(id_a)
     attributes_b = map |> Map.get(id_b)
 
-    keys_a = attributes_a |> Enum.map(fn {k, _v} -> k end) |> MapSet.new
-    keys_b = attributes_b |> Enum.map(fn {k, _v} -> k end) |> MapSet.new
+    keys_a = attributes_a |> Enum.map(fn {k, _v} -> k end) |> MapSet.new()
+    keys_b = attributes_b |> Enum.map(fn {k, _v} -> k end) |> MapSet.new()
 
     common_attributes_keys = MapSet.intersection(keys_a, keys_b)
 
-    common_attributes_a = common_attributes_keys |> Enum.map(fn common_key -> Enum.find(attributes_a, fn {k, _v} -> k == common_key end) |> elem(1) end)
-    common_attributes_b = common_attributes_keys |> Enum.map(fn common_key -> Enum.find(attributes_b, fn {k, _v} -> k == common_key end) |> elem(1) end)
+    common_attributes_a =
+      common_attributes_keys
+      |> Enum.map(fn common_key ->
+        Enum.find(attributes_a, fn {k, _v} -> k == common_key end) |> elem(1)
+      end)
+
+    common_attributes_b =
+      common_attributes_keys
+      |> Enum.map(fn common_key ->
+        Enum.find(attributes_b, fn {k, _v} -> k == common_key end) |> elem(1)
+      end)
 
     Similarity.cosine_srol(common_attributes_a, common_attributes_b)
   end
 
   @doc """
-  Returns a stream of all unique pairs of similarity values between ids in %Cosine{}.map
+  Returns a stream of all unique pairs of similarities in `%Cosine{}.map`
   """
   def stream(%Cosine{map: map}) do
     Stream.resource(
@@ -78,10 +87,18 @@ defmodule Similarity.Cosine do
   end
 
   @doc false
-  def add_attributes(struct = %Cosine{attributes_counter: attributes_counter, attributes_map: attributes_map}, attributes) do
-    {new_attributes_counter, new_attributes_map} = do_add_attributes(attributes, attributes_counter, attributes_map)
+  def add_attributes(
+        struct = %Cosine{attributes_counter: attributes_counter, attributes_map: attributes_map},
+        attributes
+      ) do
+    {new_attributes_counter, new_attributes_map} =
+      do_add_attributes(attributes, attributes_counter, attributes_map)
 
-    %Cosine{struct | attributes_counter: new_attributes_counter, attributes_map: new_attributes_map}
+    %Cosine{
+      struct
+      | attributes_counter: new_attributes_counter,
+        attributes_map: new_attributes_map
+    }
   end
 
   @doc false

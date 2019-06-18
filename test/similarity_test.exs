@@ -1,6 +1,5 @@
 defmodule SimilarityTest do
   use ExUnit.Case
-  doctest Similarity
 
   test "Cosine similarity" do
     assert Similarity.cosine([1,2], [1,2]) |> Float.round == 1

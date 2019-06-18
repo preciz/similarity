@@ -2,7 +2,7 @@ defmodule Similarity do
   @moduledoc """
   Contains basic functions for similarity calculation
 
-  (For simple use-case see Similarity.Cosine module)
+  (For simple usage see `Similarity.Cosine` module)
   """
 
   @doc """
