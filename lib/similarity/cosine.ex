@@ -81,7 +81,7 @@ defmodule Similarity.Cosine do
   @doc false
   def stream_next({[h_id | tl_ids], map}) do
     {
-      tl_ids |> Enum.map(fn id -> {h_id, id, between(map, h_id, id)} end),
+      tl_ids |> Enum.map(fn id -> {h_id, id, do_between(map, h_id, id)} end),
       {tl_ids, map}
     }
   end
