@@ -1,6 +1,12 @@
 defmodule Similarity do
+  @moduledoc """
+  Contains basic functions for similarity calculation
+
+  (For simple use-case see Similarity.Cosine module)
+  """
+
   @doc """
-  Calculates Cosine similarity between two vectors
+  Calculates Cosine similarity between two vectors.
 
   https://en.wikipedia.org/wiki/Cosine_similarity#Definition
   """
@@ -26,7 +32,7 @@ defmodule Similarity do
   end
 
   @doc """
-  Calculates Euclidean magnitude of one vector
+  Calculates Euclidean magnitude of one vector.
 
   https://en.wikipedia.org/wiki/Magnitude_(mathematics)#Euclidean_vector_space
   """
