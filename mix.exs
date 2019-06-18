@@ -1,10 +1,12 @@
 defmodule Similarity.MixProject do
   use Mix.Project
 
+  @version "0.1.0"
+
   def project do
     [
       app: :similarity,
-      version: "0.1.0",
+      version: @version,
       elixir: "~> 1.7",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
@@ -30,6 +32,7 @@ defmodule Similarity.MixProject do
   defp docs do
     [
       main: "Similarity",
+      source_ref: "v#{@version}",
       source_url: "https://github.com/preciz/similarity",
     ]
   end
