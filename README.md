@@ -36,7 +36,7 @@ iex(2)> s = s |> Similarity.Cosine.add("a", [{"bananas", 9}, {"hair_color_r", 12
 iex(3]> s = s |> Similarity.Cosine.add("b", [{"bananas", 19}, {"hair_color_r", 124}, {"hair_color_g", 8}, {"hair_color_b", 122}])
 iex(4)> s = s |> Similarity.Cosine.add("c", [{"bananas", 9}, {"hair_color_r", 124}])
 
-iex(5)> s |> Similarity.Cosine.stream  |> Enum.to_list
+iex(5)> s |> Similarity.Cosine.stream |> Enum.to_list
 [
   {"a", "b", 1.9967471152702767},
   {"a", "c", 1.4142135623730951},
@@ -59,8 +59,8 @@ iex(1)> Similarity.cosine([1,2,3], [3,2,0])
 0.5188745216627709
 ```
 
-Cosine similarity between two vectors, multiplied by the square root of the length of the length of the vectors.
-(In my experience where attribute numbers don't match this works beautifully).
+Cosine similarity between two vectors, multiplied by the square root of the length of the vectors.
+(In my experience where number of attributes don't match this works beautifully).
 ```elixir
 iex(1)> a = [1,2,3,4]
 iex(2)> b = [1,2,3]
