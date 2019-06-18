@@ -44,6 +44,13 @@ iex(5)> s |> Similarity.Cosine.stream  |> Enum.to_list
 ]
 ```
 
+Or use with `Similarity.Cosine.between/3`:
+
+```elixir
+iex(6)> s |> Similarity.Cosine.between("a", "b")
+1.9967471152702767
+```
+
 ### Basic usage
 
 Cosine similarity between two vectors
