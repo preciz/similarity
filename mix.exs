@@ -20,6 +20,18 @@ defmodule Similarity.MixProject do
     ]
   end
 
+  def application do
+    [
+      extra_application: [:logger]
+    ]
+  end
+
+  defp deps do
+    [
+      {:ex_doc, "~> 0.20.2", only: :dev, runtime: false}
+    ]
+  end
+
   defp package do
     [
       maintainers: ["Barna Kovacs"],
@@ -33,18 +45,6 @@ defmodule Similarity.MixProject do
       main: "Similarity",
       source_ref: "v#{@version}",
       source_url: "https://github.com/preciz/similarity",
-    ]
-  end
-
-  def application do
-    [
-      extra_application: [:logger]
-    ]
-  end
-
-  defp deps do
-    [
-      {:ex_doc, "~> 0.20.2", only: :dev, runtime: false}
     ]
   end
 end
