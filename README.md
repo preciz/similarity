@@ -2,7 +2,7 @@
 
 A library for easy cosine similarity calculation
 
-Cosine similarity is not sensitive for the scale of the vector!
+Cosine similarity is not sensitive to the scale of the vector!
 
 ```elixir
 iex(1)> Similarity.cosine([1,2,3], [1,2,3])
@@ -26,7 +26,7 @@ end
 
 ## Usage
 
-### Easy
+### Easy usage
 Module `Similarity.Cosine` takes care of building a struct and streaming similarities:
 (It handles non matching attributes, elements added don't have to have the exact attributes)
 
