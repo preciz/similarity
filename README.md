@@ -53,14 +53,15 @@ iex(6)> s |> Similarity.Cosine.between("a", "b")
 
 ### Basic usage
 
-Cosine similarity between two vectors
+```Similarity.cosine/2``` Cosine similarity between two vectors
 ```elixir
 iex(1)> Similarity.cosine([1,2,3], [3,2,0])
 0.5188745216627709
 ```
 
+```Similarity.cosine_srol/2```
 Cosine similarity between two vectors, multiplied by the square root of the length of the vectors.
-(In my experience where number of attributes don't match this works beautifully).
+(In my experience where number of common attributes don't match between some vectros this gives a better value).
 ```elixir
 iex(1)> a = [1,2,3,4]
 iex(2)> b = [1,2,3]
