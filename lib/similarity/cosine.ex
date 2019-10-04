@@ -1,6 +1,6 @@
 defmodule Similarity.Cosine do
   @moduledoc """
-  A structure that can be used to accumulate attributes and calcuate similarity between ids.
+  A struct that can be used to accumulate ids & attributes and calcuate similarity between them.
   """
 
   alias Similarity.Cosine
@@ -8,17 +8,16 @@ defmodule Similarity.Cosine do
   defstruct attributes_counter: 0, attributes_map: %{}, map: %{}
 
   @doc """
-  Returns a new Cosine struct to be first used with `add/3` function
+  Returns a new `%Cosine{}` struct to be first used with `add/3` function
   """
   def new, do: %Cosine{}
 
   @doc """
   Puts a new id with attributes into `%Cosine{}.map` and returns `%Cosine{}` struct.
 
-  Usage:
-
-      iex> s = Similarity.Cosine.new
-      iex> s |> Similarity.Cosine.add("barna", [{"n_of_bacons", 3}, {"hair_color_r", 124}, {"hair_color_g", 188}, {"hair_color_b", 11}])
+  ## Example:
+      s = Similarity.Cosine.new
+      s = s |> Similarity.Cosine.add("barna", [{"n_of_bacons", 3}, {"hair_color_r", 124}, {"hair_color_g", 188}, {"hair_color_b", 11}])
   """
   def add(struct = %Cosine{map: map}, id, attributes) do
     struct = %Cosine{attributes_map: attributes_map} = add_attributes(struct, attributes)
@@ -33,6 +32,12 @@ defmodule Similarity.Cosine do
 
   @doc """
   Returns `Similarity.cosine_srol/2` similarity between two pairs of ids (id_a, id_b) in `%Cosine{}`
+
+  ## Example:
+      s = Similarity.Cosine.new
+      s = s |> Similarity.Cosine.add("barna", [{"n_of_bacons", 3}, {"hair_color_r", 124}, {"hair_color_g", 188}, {"hair_color_b", 11}])
+      s = s |> Similarity.Cosine.add("somebody", [{"n_of_bacons", 0}, {"hair_color_r", 222}, {"hair_color_g", 62}, {"hair_color_b", 11}])
+      s |> Similarity.Cosine.between("barna", "somebody")
   """
   def between(%Cosine{map: map}, id_a, id_b) do
     do_between(map, id_a, id_b)
@@ -64,6 +69,12 @@ defmodule Similarity.Cosine do
 
   @doc """
   Returns a stream of all unique pairs of similarities in `%Cosine{}.map`
+
+  ## Example:
+      s = Similarity.Cosine.new
+      s = s |> Similarity.Cosine.add("barna", [{"n_of_bacons", 3}, {"hair_color_r", 124}, {"hair_color_g", 188}, {"hair_color_b", 11}])
+      s = s |> Similarity.Cosine.add("somebody", [{"n_of_bacons", 0}, {"hair_color_r", 222}, {"hair_color_g", 62}, {"hair_color_b", 11}])
+      Similarity.Cosine.stream(s)
   """
   def stream(%Cosine{map: map}) do
     Stream.resource(

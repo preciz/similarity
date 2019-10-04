@@ -1,11 +1,12 @@
 defmodule Similarity.CosineTest do
   use ExUnit.Case
+  alias Similarity.Cosine
 
   test "add" do
-		s = Similarity.Cosine.new
-		s = s |> Similarity.Cosine.add("barna", [{"n_of_bacons", 3}, {"hair_color_r", 124}, {"hair_color_g", 188}, {"hair_color_b", 11}])
+		s = Cosine.new
+		s = s |> Cosine.add("barna", [{"n_of_bacons", 3}, {"hair_color_r", 124}, {"hair_color_g", 188}, {"hair_color_b", 11}])
 
-		assert (%Similarity.Cosine{
+		assert (%Cosine{
 			attributes_counter: 4,
 			attributes_map: %{
 				"hair_color_b" => 3,
@@ -18,10 +19,10 @@ defmodule Similarity.CosineTest do
   end
 
   test "test between" do
-    s = Similarity.Cosine.new
-    s = s |> Similarity.Cosine.add("barna", [{"n_of_bacons", 3}, {"hair_color_r", 124}, {"hair_color_g", 188}, {"hair_color_b", 11}])
-    s = s |> Similarity.Cosine.add("somebody", [{"n_of_bacons", 2}, {"hair_color_r", 24}, {"hair_color_g", 18}, {"hair_color_b", 111}])
+    s = Cosine.new
+    s = s |> Cosine.add("barna", [{"n_of_bacons", 3}, {"hair_color_r", 124}, {"hair_color_g", 188}, {"hair_color_b", 11}])
+    s = s |> Cosine.add("somebody", [{"n_of_bacons", 2}, {"hair_color_r", 24}, {"hair_color_g", 18}, {"hair_color_b", 111}])
 
-    assert Similarity.Cosine.between(s, "barna", "somebody") |> Float.round(3) == 0.585
+    assert Cosine.between(s, "barna", "somebody") |> Float.round(3) == 0.585
   end
 end

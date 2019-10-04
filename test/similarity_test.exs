@@ -1,5 +1,6 @@
 defmodule SimilarityTest do
   use ExUnit.Case
+  doctest Similarity
 
   test "Cosine similarity" do
     assert Similarity.cosine([1,2], [1,2]) |> Float.round == 1
@@ -16,7 +17,7 @@ defmodule SimilarityTest do
   end
 
   test "Euclidean magnitude" do
-    assert Similarity.magnitude([2]) == 2
+    assert Similarity.magnitude([2]) == 2.0
 
     assert Similarity.magnitude([1,2]) == Similarity.magnitude([2,1])
 

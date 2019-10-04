@@ -2,13 +2,16 @@ defmodule Similarity do
   @moduledoc """
   Contains basic functions for similarity calculation
 
-  (For simple usage see `Similarity.Cosine` module)
+  (For easy usage and cosine similarity calculation see `Similarity.Cosine` module)
   """
 
   @doc """
   Calculates Cosine similarity between two vectors.
 
-  https://en.wikipedia.org/wiki/Cosine_similarity#Definition
+  [https://en.wikipedia.org/wiki/Cosine_similarity#Definition](https://en.wikipedia.org/wiki/Cosine_similarity#Definition)
+
+  ## Example:
+      Similarity.cosine([1, 2, 3], [1, 2, 8])
   """
   def cosine(list_a, list_b) when length(list_a) == length(list_b) do
     dot_product(list_a, list_b) / (magnitude(list_a) * magnitude(list_b))
@@ -20,8 +23,10 @@ defmodule Similarity do
   srol = square root of length
 
   This gives better comparable numbers in real life where the number of attributes compared might differ.
-
   Use this if the number of shared attributes between real world objects differ.
+
+  ## Example:
+      Similarity.cosine_srol([1, 2, 3], [1, 2, 8])
   """
   def cosine_srol(list_a, list_b) do
     cosine(list_a, list_b) * :math.sqrt(length(list_a))
@@ -30,7 +35,11 @@ defmodule Similarity do
   @doc """
   Calculates Euclidean dot product of two vectors.
 
-  https://en.wikipedia.org/wiki/Euclidean_vector#Dot_product
+  [https://en.wikipedia.org/wiki/Euclidean_vector#Dot_product](https://en.wikipedia.org/wiki/Euclidean_vector#Dot_product)
+
+  ## Example:
+      iex> Similarity.dot_product([1, 2], [3, 4])
+      11
   """
   def dot_product(list_a, list_b, acc \\ 0)
 
@@ -47,7 +56,11 @@ defmodule Similarity do
   @doc """
   Calculates Euclidean magnitude of one vector.
 
-  https://en.wikipedia.org/wiki/Magnitude_(mathematics)#Euclidean_vector_space
+  [https://en.wikipedia.org/wiki/Magnitude_(mathematics)#Euclidean_vector_space](https://en.wikipedia.org/wiki/Magnitude_(mathematics)#Euclidean_vector_space)
+
+  ## Example:
+      iex> Similarity.magnitude([2])
+      2.0
   """
   def magnitude(list, acc \\ 0)
 
