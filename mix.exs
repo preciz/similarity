@@ -22,7 +22,7 @@ defmodule Similarity.MixProject do
 
   def application do
     [
-      extra_application: [:logger]
+      extra_application: []
     ]
   end
 
