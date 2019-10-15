@@ -3,6 +3,7 @@ defmodule Similarity do
   Contains basic functions for similarity calculation.
 
   `Similarity.Cosine` - easy cosine similarity calculation
+
   `Similarity.Simhash` - simhash similarity calculation between two strings
   """
 
