@@ -28,6 +28,8 @@ defmodule Similarity.MixProject do
 
   defp deps do
     [
+      {:fast_ngram, "~> 1.0"},
+      {:siphash, "~> 3.0"},
       {:ex_doc, "~> 0.20.2", only: :dev, runtime: false}
     ]
   end
