@@ -61,6 +61,7 @@ left = "pork belly jerky brisket tenderloin shank kevin spare ribs"
 right = "porchetta pork loin. Leberkas ball tip biltong, beef ribs"
 
 Similarity.simhash(left, right, ngram_size: 3)
+0.484375
 ```
 
 ## Installation
