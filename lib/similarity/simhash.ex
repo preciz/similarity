@@ -3,10 +3,10 @@ defmodule Similarity.Simhash do
   Simhash string similarity algorithm.
   [Description of Simhash](https://matpalm.com/resemblance/simhash/)
 
-      iex> Similarity.Simhash.similarity("Barna", "Kovacs")
+      iex> Similarity.simhash("Barna", "Kovacs")
       0.59375
 
-      iex> Similarity.Simhash.similarity("Austria", "Australia")
+      iex> Similarity.simhash("Austria", "Australia")
       0.65625
 
   """
@@ -21,10 +21,10 @@ defmodule Similarity.Simhash do
 
   ## Examples
 
-      iex> Similarity.Simhash.similarity("khan academy", "khan academia")
+      iex> Similarity.simhash("khan academy", "khan academia")
       0.890625
 
-      iex> Similarity.Simhash.similarity("khan academy", "academy khan", ngram_size: 1)
+      iex> Similarity.simhash("khan academy", "academy khan", ngram_size: 1)
       1.0
 
   """

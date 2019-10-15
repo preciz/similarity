@@ -1,9 +1,12 @@
 defmodule Similarity do
   @moduledoc """
-  Contains basic functions for similarity calculation
+  Contains basic functions for similarity calculation.
 
-  (For easy usage and cosine similarity calculation see `Similarity.Cosine` module)
+  `Similarity.Cosine` - easy cosine similarity calculation
+  `Similarity.Simhash` - simhash similarity calculation between two strings
   """
+
+  defdelegate simhash(left, right, options \\ []), to: Similarity.Simhash, as: :similarity
 
   @doc """
   Calculates Cosine similarity between two vectors.

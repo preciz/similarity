@@ -60,7 +60,7 @@ In real world scenario I suggest using this if compared vectors aren't the same 
 left = "pork belly jerky brisket tenderloin shank kevin spare ribs"
 right = "porchetta pork loin. Leberkas ball tip biltong, beef ribs"
 
-Similarity.Simhash.similarity(left, right, ngram_size: 3)
+Similarity.simhash(left, right, ngram_size: 3)
 ```
 
 ## Installation
