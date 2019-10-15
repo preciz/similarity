@@ -74,3 +74,27 @@ def deps do
   ]
 end
 ```
+
+## Performance
+Similarity.simhash is 2x faster than simhash-ex v1.1.0 package .
+
+```
+Benchmark suite executing with the following configuration:
+warmup: 2 s
+time: 5 s
+memory time: 0 ns
+parallel: 1
+inputs: none specified
+Estimated total run time: 14 s
+
+Benchmarking simhash-ex...
+Benchmarking similarity.simhash...
+
+Name                         ips        average  deviation         median         99th %
+similarity.simhash        3.67 K      272.69 μs     ±6.50%      267.84 μs      353.05 μs
+simhash-ex                1.75 K      572.14 μs    ±12.31%      552.22 μs      781.02 μs
+
+Comparison:
+similarity.simhash        3.67 K
+simhash-ex                1.75 K - 2.10x slower +299.46 μs
+```
