@@ -53,7 +53,6 @@ defmodule Similarity.Simhash do
   end
 
   @doc false
-  @spec ngram_hashes(String.t(), pos_integer) :: list(list)
   def ngram_hashes(string, n) do
     string
     |> FastNgram.letter_ngrams(n)
@@ -61,7 +60,6 @@ defmodule Similarity.Simhash do
   end
 
   @doc false
-  @spec hash_similarity(list, list) :: float
   def hash_similarity(left, right) do
     1 - hamming_distance(left, right) / 64
   end
@@ -88,18 +86,17 @@ defmodule Similarity.Simhash do
 
   def hamming_distance([], [], acc), do: acc
 
-  @doc false
-  def vector_addition([hd_list | tl_lists]) do
+  defp vector_addition([hd_list | tl_lists]) do
     vector_addition(tl_lists, hd_list)
   end
 
-  def vector_addition([hd_list | tl_lists], acc_list) do
+  defp vector_addition([hd_list | tl_lists], acc_list) do
     new_acc_list = :lists.zipwith(fn x, y -> x + y end, hd_list, acc_list)
 
     vector_addition(tl_lists, new_acc_list)
   end
 
-  def vector_addition([], acc_list), do: acc_list
+  defp vector_addition([], acc_list), do: acc_list
 
   defp to_list(<<1::size(1), data::bitstring>>), do: [1 | to_list(data)]
   defp to_list(<<0::size(1), data::bitstring>>), do: [-1 | to_list(data)]
