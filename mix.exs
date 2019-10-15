@@ -15,7 +15,7 @@ defmodule Similarity.MixProject do
       name: "Similarity",
       docs: docs(),
 
-      description: "A library for easy cosine similarity calculation",
+      description: "A library for cosine similarity & simhash calculation",
       package: package(),
     ]
   end
