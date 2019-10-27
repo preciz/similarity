@@ -6,6 +6,18 @@ Cosine similarity & Simhash implementation
 
 Full documentation can be found at [https://hexdocs.pm/similarity](https://hexdocs.pm/similarity).
 
+## Installation
+
+Add `similarity` to your list of dependencies in `mix.exs`:
+
+```elixir
+def deps do
+  [
+    {:similarity, "~> 0.2"}
+  ]
+end
+```
+
 ## Cosine Similarity
 
 Cosine similarity is not sensitive to the scale of the vector!
@@ -64,18 +76,6 @@ right = "porchetta pork loin. Leberkas ball tip biltong, beef ribs"
 
 Similarity.simhash(left, right, ngram_size: 3)
 0.484375
-```
-
-## Installation
-
-Add `similarity` to your list of dependencies in `mix.exs`:
-
-```elixir
-def deps do
-  [
-    {:similarity, "~> 0.2"}
-  ]
-end
 ```
 
 ## Performance
