@@ -1,5 +1,7 @@
 # Similarity
 
+[![Build Status](https://travis-ci.org/preciz/similarity.svg?branch=master)](https://travis-ci.org/preciz/similarity)
+
 Cosine similarity & Simhash implementation
 
 Full documentation can be found at [https://hexdocs.pm/similarity](https://hexdocs.pm/similarity).
@@ -77,7 +79,7 @@ end
 ```
 
 ## Performance
-Similarity.simhash is 2x faster than simhash-ex v1.1.0 package .
+Similarity.simhash is 2x faster than simhash-ex v1.1.0 package.
 
 ```
 Benchmark suite executing with the following configuration:
@@ -99,3 +101,7 @@ Comparison:
 similarity.simhash        3.67 K
 simhash-ex                1.75 K - 2.10x slower +299.46 μs
 ```
+
+## License
+
+Similarity is [MIT licensed](LICENSE).
