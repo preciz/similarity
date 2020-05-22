@@ -107,7 +107,8 @@ defmodule Similarity.Simhash do
   defp normalize_bits([]), do: []
 
   defp siphash(str) do
-    SipHash.hash!("0123456789ABCDEF", str)
-    |> :binary.encode_unsigned()
+    int = SipHash.hash!("0123456789ABCDEF", str)
+
+    <<int::64>>
   end
 end
