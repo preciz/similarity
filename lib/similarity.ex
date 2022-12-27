@@ -7,8 +7,14 @@ defmodule Similarity do
   `Similarity.Simhash` - simhash similarity calculation between two strings
   """
 
+  @doc """
+  For docs see `Similarity.Simhash`
+  """
   defdelegate simhash(left, right, options \\ []), to: Similarity.Simhash, as: :similarity
 
+  @doc """
+  For docs see `Similarity.SorensenDice`
+  """
   defdelegate sorensen_dice(left, right, options \\ []), to: Similarity.SorensenDice, as: :sorensen_dice
 
   @doc """
