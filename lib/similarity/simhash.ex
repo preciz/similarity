@@ -30,9 +30,16 @@ defmodule Similarity.Simhash do
   """
   @spec similarity(String.t(), String.t(), pos_integer) :: float
   def similarity(left, right, options \\ []) when is_binary(left) and is_binary(right) do
-    n = options[:ngram_size] || 3
+    ngram_size = options[:ngram_size] || 3
 
-    hash_similarity(hash(left, n), hash(right, n))
+    if String.length(left) < ngram_size or String.length(right) < ngram_size do
+      raise ArgumentError, """
+        left and right strings must be at least #{ngram_size} characters long.
+        when using ngram_size of #{ngram_size}
+      """
+    end
+
+    hash_similarity(hash(left, ngram_size), hash(right, ngram_size))
   end
 
   @doc """
@@ -45,18 +52,23 @@ defmodule Similarity.Simhash do
 
   """
   @spec hash(String.t(), pos_integer) :: list(0 | 1)
-  def hash(string, n) do
+  def hash(string, ngram_size) do
+    if String.length(string) < ngram_size do
+      raise ArgumentError,
+            "string must be at least #{ngram_size} characters long when using ngram_size #{ngram_size}"
+    end
+
     string
-    |> ngram_hashes(n)
-    |> vector_addition
-    |> normalize_bits
+    |> ngram_hashes(ngram_size)
+    |> vector_addition()
+    |> normalize_bits()
   end
 
   @doc false
   def ngram_hashes(string, n) do
     string
     |> FastNgram.letter_ngrams(n)
-    |> Enum.map(&(&1 |> siphash |> to_list))
+    |> Enum.map(&(&1 |> siphash() |> to_list()))
   end
 
   @doc false
