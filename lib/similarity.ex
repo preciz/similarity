@@ -24,7 +24,7 @@ defmodule Similarity do
   @doc """
   Multiplies cosine similarity with the square root of compared vectors length.
 
-  srol = square root of length
+  srol here means square root of length
 
   This gives better comparable numbers in real life where the number of attributes compared might differ.
   Use this if the number of shared attributes between real world objects differ.
