@@ -53,7 +53,7 @@ defmodule Similarity.Simhash do
       Similarity.Simhash.hash("alma korte", 3, :list)
       [1, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, ...]
 
-      Similarity.Simhash.hash("alma korte", 3, :integer)
+      iex> Similarity.Simhash.hash("alma korte", 3, :integer)
       15012197954348909067
 
   """
