@@ -11,12 +11,10 @@ defmodule Similarity.MixProject do
       start_permanent: Mix.env() == :prod,
       deps: deps(),
       source_url: "https://github.com/preciz/similarity",
-
       name: "Similarity",
       docs: docs(),
-
       description: "A library for cosine similarity & simhash calculation",
-      package: package(),
+      package: package()
     ]
   end
 
@@ -46,7 +44,7 @@ defmodule Similarity.MixProject do
     [
       main: "Similarity",
       source_ref: "v#{@version}",
-      source_url: "https://github.com/preciz/similarity",
+      source_url: "https://github.com/preciz/similarity"
     ]
   end
 end
