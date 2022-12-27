@@ -24,5 +24,7 @@ defmodule Similarity.SimhashTest do
   test "similarity of different strings" do
     assert Similarity.simhash("aaa", "bbb") == 0.53125
     assert Similarity.simhash("aaaa", "bbbb") == 0.53125
+
+    assert Similarity.simhash("we spoke", "bespoke") == 0.703125
   end
 end
