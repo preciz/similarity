@@ -20,4 +20,9 @@ defmodule Similarity.SimhashTest do
     assert Simhash.similarity("a", "a", ngram_size: 1) == 1
     assert Simhash.similarity("aa", "aa", ngram_size: 2) == 1
   end
+
+  test "similarity of different strings" do
+    assert Similarity.simhash("aaa", "bbb") == 0.53125
+    assert Similarity.simhash("aaaa", "bbbb") == 0.53125
+  end
 end
