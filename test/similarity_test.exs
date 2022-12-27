@@ -31,12 +31,14 @@ defmodule SimilarityTest do
   end
 
   test "Sorensen-Dice coefficient with lists" do
-    assert Similarity.sorensen_dice([1,2,3], [1,2,3]) == 1.0
-    assert Similarity.sorensen_dice([1,2,3], [1,2,3,4]) == 0.8571428571428571
+    assert Similarity.sorensen_dice([1, 2, 3], [1, 2, 3]) == 1.0
+    assert Similarity.sorensen_dice([1, 2, 3], [1, 2, 3, 4]) == 0.8571428571428571
   end
 
   test "Sorensen-Dice coefficient with MapSets" do
-    assert Similarity.sorensen_dice(MapSet.new([1,2,3]), MapSet.new([1,2,3])) == 1.0
-    assert Similarity.sorensen_dice(MapSet.new([1,2,3]), MapSet.new([1,2,3,4])) == 0.8571428571428571
+    assert Similarity.sorensen_dice(MapSet.new([1, 2, 3]), MapSet.new([1, 2, 3])) == 1.0
+
+    assert Similarity.sorensen_dice(MapSet.new([1, 2, 3]), MapSet.new([1, 2, 3, 4])) ==
+             0.8571428571428571
   end
 end

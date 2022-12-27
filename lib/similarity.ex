@@ -15,7 +15,9 @@ defmodule Similarity do
   @doc """
   For docs see `Similarity.SorensenDice`
   """
-  defdelegate sorensen_dice(left, right, options \\ []), to: Similarity.SorensenDice, as: :sorensen_dice
+  defdelegate sorensen_dice(left, right, options \\ []),
+    to: Similarity.SorensenDice,
+    as: :sorensen_dice
 
   @doc """
   Calculates Cosine similarity between two vectors.
