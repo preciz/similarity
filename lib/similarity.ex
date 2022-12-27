@@ -26,8 +26,9 @@ defmodule Similarity do
 
   srol here means square root of length
 
-  This gives better comparable numbers in real life where the number of attributes compared might differ.
-  Use this if the number of shared attributes between real world objects differ.
+  This gives better comparable numbers where the number of attributes
+  compared might differ. You can try to use this instead of `cosine/2`
+  if the number of shared attributes differ.
 
   ## Example:
       Similarity.cosine_srol([1, 2, 3], [1, 2, 8])
