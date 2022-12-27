@@ -57,7 +57,7 @@ defmodule Similarity.Simhash do
       15012197954348909067
 
   """
-  @spec hash(String.t(), pos_integer, :list |:integer) :: list(0 | 1)
+  @spec hash(String.t(), pos_integer, :list | :integer) :: list(0 | 1)
   def hash(string, ngram_size, return_type \\ :list)
 
   def hash(string, ngram_size, :list) do
