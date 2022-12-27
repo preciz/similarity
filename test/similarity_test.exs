@@ -23,4 +23,20 @@ defmodule SimilarityTest do
 
     assert Similarity.magnitude([1, 2]) |> Float.round(3) == 2.236
   end
+
+  test "Sorensen-Dice coefficient with strings" do
+    assert Similarity.sorensen_dice("a", "a", ngram_size: 1) == 1.0
+    assert Similarity.sorensen_dice("a", "b", ngram_size: 1) == 0.0
+    assert Similarity.sorensen_dice("Just a few words", "Words just a few") == 0.6428571428571429
+  end
+
+  test "Sorensen-Dice coefficient with lists" do
+    assert Similarity.sorensen_dice([1,2,3], [1,2,3]) == 1.0
+    assert Similarity.sorensen_dice([1,2,3], [1,2,3,4]) == 0.8571428571428571
+  end
+
+  test "Sorensen-Dice coefficient with MapSets" do
+    assert Similarity.sorensen_dice(MapSet.new([1,2,3]), MapSet.new([1,2,3])) == 1.0
+    assert Similarity.sorensen_dice(MapSet.new([1,2,3]), MapSet.new([1,2,3,4])) == 0.8571428571428571
+  end
 end

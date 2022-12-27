@@ -9,6 +9,8 @@ defmodule Similarity do
 
   defdelegate simhash(left, right, options \\ []), to: Similarity.Simhash, as: :similarity
 
+  defdelegate sorensen_dice(left, right, options \\ []), to: Similarity.SorensenDice, as: :sorensen_dice
+
   @doc """
   Calculates Cosine similarity between two vectors.
 
