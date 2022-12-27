@@ -39,6 +39,13 @@ defmodule Similarity.SorensenDice do
   def sorensen_dice(string1, string2, options) when is_binary(string1) and is_binary(string2) do
     ngram_size = Keyword.get(options, :ngram_size, 3)
 
+    if String.length(string1) < ngram_size or String.length(string2) < ngram_size do
+      raise ArgumentError, """
+        left and right strings must be at least #{ngram_size} characters long.
+        when using ngram_size of #{ngram_size}
+      """
+    end
+
     ngrams1 = FastNgram.letter_ngrams(string1, ngram_size)
     ngrams2 = FastNgram.letter_ngrams(string2, ngram_size)
 
