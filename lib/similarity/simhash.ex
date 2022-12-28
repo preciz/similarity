@@ -53,11 +53,14 @@ defmodule Similarity.Simhash do
       Similarity.Simhash.hash("alma korte", 3, :list)
       [1, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, ...]
 
-      iex> Similarity.Simhash.hash("alma korte", 3, :integer)
+      iex> Similarity.Simhash.hash("alma korte", 3, :int64_unsigned)
       15012197954348909067
 
+      iex> Similarity.Simhash.hash("alma korte", 3, :int64_signed)
+      -3434546119360642549
+
   """
-  @spec hash(String.t(), pos_integer, :list | :integer) :: list(0 | 1)
+  @spec hash(String.t(), pos_integer, :list | :int64_signed | :int64_unsigned) :: list(0 | 1)
   def hash(string, ngram_size, return_type \\ :list)
 
   def hash(string, ngram_size, :list) do
@@ -73,7 +76,7 @@ defmodule Similarity.Simhash do
   end
 
   # implemented as below for performance reasons
-  def hash(string, ngram_size, :integer) do
+  def hash(string, ngram_size, :int64_unsigned) do
     [n1, n2, n3, n4, n5, n6, n7, n8, n9, n10, n11, n12,
      n13, n14, n15, n16, n17, n18, n19, n20, n21, n22, n23,
      n24, n25, n26, n27, n28, n29, n30, n31, n32, n33, n34,
@@ -82,14 +85,35 @@ defmodule Similarity.Simhash do
      n57, n58, n59, n60, n61, n62, n63, n64] =
       hash(string, ngram_size, :list)
 
-    <<int64::64>> = <<n1::1, n2::1, n3::1, n4::1, n5::1, n6::1, n7::1, n8::1, n9::1, n10::1, n11::1, n12::1,
-      n13::1, n14::1, n15::1, n16::1, n17::1, n18::1, n19::1, n20::1, n21::1, n22::1, n23::1,
-      n24::1, n25::1, n26::1, n27::1, n28::1, n29::1, n30::1, n31::1, n32::1, n33::1, n34::1,
-      n35::1, n36::1, n37::1, n38::1, n39::1, n40::1, n41::1, n42::1, n43::1, n44::1, n45::1,
-      n46::1, n47::1, n48::1, n49::1, n50::1, n51::1, n52::1, n53::1, n54::1, n55::1, n56::1,
-      n57::1, n58::1, n59::1, n60::1, n61::1, n62::1, n63::1, n64::1>>
+    <<int64_unsigned :: integer-unsigned-64>> =
+      <<n1::1, n2::1, n3::1, n4::1, n5::1, n6::1, n7::1, n8::1, n9::1, n10::1, n11::1, n12::1,
+        n13::1, n14::1, n15::1, n16::1, n17::1, n18::1, n19::1, n20::1, n21::1, n22::1, n23::1,
+        n24::1, n25::1, n26::1, n27::1, n28::1, n29::1, n30::1, n31::1, n32::1, n33::1, n34::1,
+        n35::1, n36::1, n37::1, n38::1, n39::1, n40::1, n41::1, n42::1, n43::1, n44::1, n45::1,
+        n46::1, n47::1, n48::1, n49::1, n50::1, n51::1, n52::1, n53::1, n54::1, n55::1, n56::1,
+        n57::1, n58::1, n59::1, n60::1, n61::1, n62::1, n63::1, n64::1>>
 
-    int64
+    int64_unsigned
+  end
+
+  def hash(string, ngram_size, :int64_signed) do
+    [n1, n2, n3, n4, n5, n6, n7, n8, n9, n10, n11, n12,
+     n13, n14, n15, n16, n17, n18, n19, n20, n21, n22, n23,
+     n24, n25, n26, n27, n28, n29, n30, n31, n32, n33, n34,
+     n35, n36, n37, n38, n39, n40, n41, n42, n43, n44, n45,
+     n46, n47, n48, n49, n50, n51, n52, n53, n54, n55, n56,
+     n57, n58, n59, n60, n61, n62, n63, n64] =
+      hash(string, ngram_size, :list)
+
+    <<int :: integer-signed-64>> =
+      <<n1::1, n2::1, n3::1, n4::1, n5::1, n6::1, n7::1, n8::1, n9::1, n10::1, n11::1, n12::1,
+        n13::1, n14::1, n15::1, n16::1, n17::1, n18::1, n19::1, n20::1, n21::1, n22::1, n23::1,
+        n24::1, n25::1, n26::1, n27::1, n28::1, n29::1, n30::1, n31::1, n32::1, n33::1, n34::1,
+        n35::1, n36::1, n37::1, n38::1, n39::1, n40::1, n41::1, n42::1, n43::1, n44::1, n45::1,
+        n46::1, n47::1, n48::1, n49::1, n50::1, n51::1, n52::1, n53::1, n54::1, n55::1, n56::1,
+        n57::1, n58::1, n59::1, n60::1, n61::1, n62::1, n63::1, n64::1>>
+
+    int
   end
 
   @doc false

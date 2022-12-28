@@ -30,7 +30,7 @@ defmodule Similarity.SimhashTest do
 
   test "integer siphash of 1 char string is the same as simhash of it" do
     for char <- ["a", "b", "c"] do
-      assert Simhash.hash(char, 1, :integer) == SipHash.hash!("0123456789ABCDEF", char)
+      assert Simhash.hash(char, 1, :int64_unsigned) == SipHash.hash!("0123456789ABCDEF", char)
     end
   end
 end
