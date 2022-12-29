@@ -10,7 +10,7 @@ defmodule Similarity.SimhashTest do
     end
 
     assert_raise ArgumentError, fn ->
-      Simhash.hash("a", 2)
+      Simhash.hash("a", ngram_size: 2)
     end
   end
 
@@ -30,7 +30,7 @@ defmodule Similarity.SimhashTest do
 
   test "integer siphash of 1 char string is the same as simhash of it" do
     for char <- ["a", "b", "c"] do
-      assert Simhash.hash(char, 1, :int64_unsigned) == SipHash.hash!("0123456789ABCDEF", char)
+      assert Simhash.hash(char, ngram_size: 1, hash_function: :siphash, return_type: :int64_unsigned) == SipHash.hash!("0123456789ABCDEF", char)
     end
   end
 end

@@ -20,7 +20,7 @@ defmodule Similarity.MixProject do
 
   def application do
     [
-      extra_application: []
+      extra_applications: [:crypto]
     ]
   end
 

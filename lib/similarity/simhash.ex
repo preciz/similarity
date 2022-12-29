@@ -12,6 +12,9 @@ defmodule Similarity.Simhash do
   """
   @moduledoc since: "0.1.1"
 
+  @hash_functions [:siphash, :md5, :sha256]
+  @hash_functions_bits %{siphash: 64, md5: 128, sha256: 256}
+
   @doc """
   Calculates the similarity between the left and right string, using Simhash.
   Returns a float representing similarity between `left` and `right` strings.
@@ -31,59 +34,71 @@ defmodule Similarity.Simhash do
   @spec similarity(String.t(), String.t(), pos_integer) :: float
   def similarity(left, right, options \\ []) when is_binary(left) and is_binary(right) do
     ngram_size = options[:ngram_size] || 3
+    hash_function = options[:hash_function] || :siphash
 
     if String.length(left) < ngram_size or String.length(right) < ngram_size do
       raise ArgumentError, """
-        left and right strings must be at least #{ngram_size} characters long.
-        when using ngram_size of #{ngram_size}
+        left and right strings must be at least #{inspect(ngram_size)} characters long.
+        when using ngram_size of #{inspect(ngram_size)}
       """
     end
 
-    hash_similarity(hash(left, ngram_size), hash(right, ngram_size))
+    if hash_function not in @hash_functions do
+      raise ArgumentError, """
+        hash_function must be one of #{inspect(@hash_functions)}
+      """
+    end
+
+    hash_similarity(hash(left, options), hash(right, options), @hash_functions_bits[hash_function])
   end
 
   @doc """
-  Returns the hash for the given string in the given `return_type`.
+  Returns the hash for the given string and `hash_function` in the given `return_type`.
 
   ## Examples
 
-      Similarity.Simhash.hash("alma korte", 3)
+      Similarity.Simhash.hash("alma korte")
       [1, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, ...]
 
-      Similarity.Simhash.hash("alma korte", 3, :list)
-      [1, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, ...]
-
-      iex> Similarity.Simhash.hash("alma korte", 3, :int64_unsigned)
+      iex> Similarity.Simhash.hash("alma korte", ngram_size: 3, hash_function: :siphash, return_type: :int64_unsigned)
       15012197954348909067
 
-      iex> Similarity.Simhash.hash("alma korte", 3, :int64_signed)
+      iex> Similarity.Simhash.hash("alma korte", ngram_size: 3, hash_function: :siphash, return_type: :int64_signed)
       -3434546119360642549
 
   """
-  @spec hash(String.t(), pos_integer, :list | :int64_signed | :int64_unsigned) :: list(0 | 1)
-  def hash(string, ngram_size, return_type \\ :list)
+  @spec hash(String.t(), keyword) :: list(0 | 1) | integer
+  def hash(string, options) do
+    ngram_size = options[:ngram_size] || 3
+    hash_function = options[:hash_function] || :siphash
+    return_type = options[:return_type] || :list
 
-  def hash(string, ngram_size, :list) do
+    hash(string, ngram_size, hash_function, return_type)
+  end
+
+  def hash(string, ngram_size, hash_function, :list) do
     if String.length(string) < ngram_size do
       raise ArgumentError,
             "string must be at least #{ngram_size} characters long when using ngram_size #{ngram_size}"
     end
 
     string
-    |> ngram_hashes(ngram_size)
+    |> FastNgram.letter_ngrams(ngram_size)
+    |> hash_ngrams(hash_function)
+    |> Enum.map(&bitstring_to_list/1)
     |> vector_addition()
     |> normalize_bits()
   end
 
   # implemented as below for performance reasons
-  def hash(string, ngram_size, :int64_unsigned) do
+  def hash(string, ngram_size, :siphash, :int64_unsigned) do
     [n1, n2, n3, n4, n5, n6, n7, n8, n9, n10, n11, n12,
      n13, n14, n15, n16, n17, n18, n19, n20, n21, n22, n23,
      n24, n25, n26, n27, n28, n29, n30, n31, n32, n33, n34,
      n35, n36, n37, n38, n39, n40, n41, n42, n43, n44, n45,
      n46, n47, n48, n49, n50, n51, n52, n53, n54, n55, n56,
      n57, n58, n59, n60, n61, n62, n63, n64] =
-      hash(string, ngram_size, :list)
+      hash(string, ngram_size, :siphash, :list)
 
     <<int64_unsigned :: integer-unsigned-64>> =
       <<n1::1, n2::1, n3::1, n4::1, n5::1, n6::1, n7::1, n8::1, n9::1, n10::1, n11::1, n12::1,
@@ -96,14 +111,14 @@ defmodule Similarity.Simhash do
     int64_unsigned
   end
 
-  def hash(string, ngram_size, :int64_signed) do
+  def hash(string, ngram_size, :siphash, :int64_signed) do
     [n1, n2, n3, n4, n5, n6, n7, n8, n9, n10, n11, n12,
      n13, n14, n15, n16, n17, n18, n19, n20, n21, n22, n23,
      n24, n25, n26, n27, n28, n29, n30, n31, n32, n33, n34,
      n35, n36, n37, n38, n39, n40, n41, n42, n43, n44, n45,
      n46, n47, n48, n49, n50, n51, n52, n53, n54, n55, n56,
      n57, n58, n59, n60, n61, n62, n63, n64] =
-      hash(string, ngram_size, :list)
+      hash(string, ngram_size, :siphash, :list)
 
     <<int :: integer-signed-64>> =
       <<n1::1, n2::1, n3::1, n4::1, n5::1, n6::1, n7::1, n8::1, n9::1, n10::1, n11::1, n12::1,
@@ -116,16 +131,24 @@ defmodule Similarity.Simhash do
     int
   end
 
-  @doc false
-  def ngram_hashes(string, n) do
-    string
-    |> FastNgram.letter_ngrams(n)
-    |> Enum.map(&(&1 |> siphash() |> to_list()))
+  defp hash_ngrams(ngrams, hash_function, acc \\ [])
+  defp hash_ngrams([], _hash_function, acc), do: acc
+
+  defp hash_ngrams([ngram | tl], hash_function, acc) do
+    hash_ngrams(tl, hash_function, [hash_ngram(hash_function, ngram) | acc])
   end
+
+  defp hash_ngram(:siphash, ngram), do: siphash(ngram)
+  defp hash_ngram(:md5, ngram), do: :crypto.hash(:md5, ngram)
+  defp hash_ngram(:sha256, ngram), do: :crypto.hash(:sha256, ngram)
 
   @doc false
   def hash_similarity(left, right) do
-    1 - hamming_distance(left, right) / 64
+    hash_similarity(left, right, length(left))
+  end
+
+  def hash_similarity(left, right, length) do
+    1 - hamming_distance(left, right) / length
   end
 
   @doc """
@@ -162,9 +185,9 @@ defmodule Similarity.Simhash do
 
   defp vector_addition([], acc_list), do: acc_list
 
-  defp to_list(<<1::size(1), data::bitstring>>), do: [1 | to_list(data)]
-  defp to_list(<<0::size(1), data::bitstring>>), do: [-1 | to_list(data)]
-  defp to_list(<<>>), do: []
+  defp bitstring_to_list(<<1::size(1), data::bitstring>>), do: [1 | bitstring_to_list(data)]
+  defp bitstring_to_list(<<0::size(1), data::bitstring>>), do: [-1 | bitstring_to_list(data)]
+  defp bitstring_to_list(<<>>), do: []
 
   defp normalize_bits([head | tail]) when head > 0, do: [1 | normalize_bits(tail)]
   defp normalize_bits([_head | tail]), do: [0 | normalize_bits(tail)]
