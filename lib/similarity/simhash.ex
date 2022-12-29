@@ -49,7 +49,11 @@ defmodule Similarity.Simhash do
       """
     end
 
-    hash_similarity(hash(left, options), hash(right, options), @hash_functions_bits[hash_function])
+    hash_similarity(
+      hash(left, options),
+      hash(right, options),
+      @hash_functions_bits[hash_function]
+    )
   end
 
   @doc """
