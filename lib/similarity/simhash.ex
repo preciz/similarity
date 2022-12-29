@@ -85,10 +85,10 @@ defmodule Similarity.Simhash do
     hash_function = options[:hash_function] || :siphash
     return_type = options[:return_type] || :list
 
-    hash(string, ngram_size, hash_function, return_type)
+    do_hash(string, ngram_size, hash_function, return_type)
   end
 
-  def hash(string, ngram_size, hash_function, :list) do
+  defp do_hash(string, ngram_size, hash_function, :list) do
     if String.length(string) < ngram_size do
       raise ArgumentError,
             "string must be at least #{ngram_size} characters long when using ngram_size #{ngram_size}"
@@ -103,14 +103,14 @@ defmodule Similarity.Simhash do
   end
 
   # implemented as below for performance reasons
-  def hash(string, ngram_size, :siphash, :int64_unsigned) do
+  defp do_hash(string, ngram_size, :siphash, :int64_unsigned) do
     [n1, n2, n3, n4, n5, n6, n7, n8, n9, n10, n11, n12,
      n13, n14, n15, n16, n17, n18, n19, n20, n21, n22, n23,
      n24, n25, n26, n27, n28, n29, n30, n31, n32, n33, n34,
      n35, n36, n37, n38, n39, n40, n41, n42, n43, n44, n45,
      n46, n47, n48, n49, n50, n51, n52, n53, n54, n55, n56,
      n57, n58, n59, n60, n61, n62, n63, n64] =
-      hash(string, ngram_size, :siphash, :list)
+      do_hash(string, ngram_size, :siphash, :list)
 
     <<int64_unsigned :: integer-unsigned-64>> =
       <<n1::1, n2::1, n3::1, n4::1, n5::1, n6::1, n7::1, n8::1, n9::1, n10::1, n11::1, n12::1,
@@ -123,14 +123,14 @@ defmodule Similarity.Simhash do
     int64_unsigned
   end
 
-  def hash(string, ngram_size, :siphash, :int64_signed) do
+  defp do_hash(string, ngram_size, :siphash, :int64_signed) do
     [n1, n2, n3, n4, n5, n6, n7, n8, n9, n10, n11, n12,
      n13, n14, n15, n16, n17, n18, n19, n20, n21, n22, n23,
      n24, n25, n26, n27, n28, n29, n30, n31, n32, n33, n34,
      n35, n36, n37, n38, n39, n40, n41, n42, n43, n44, n45,
      n46, n47, n48, n49, n50, n51, n52, n53, n54, n55, n56,
      n57, n58, n59, n60, n61, n62, n63, n64] =
-      hash(string, ngram_size, :siphash, :list)
+      do_hash(string, ngram_size, :siphash, :list)
 
     <<int :: integer-signed-64>> =
       <<n1::1, n2::1, n3::1, n4::1, n5::1, n6::1, n7::1, n8::1, n9::1, n10::1, n11::1, n12::1,
@@ -143,14 +143,14 @@ defmodule Similarity.Simhash do
     int
   end
 
-  def hash(string, ngram_size, :siphash, :binary) do
+  defp do_hash(string, ngram_size, :siphash, :binary) do
     [n1, n2, n3, n4, n5, n6, n7, n8, n9, n10, n11, n12,
     n13, n14, n15, n16, n17, n18, n19, n20, n21, n22, n23,
     n24, n25, n26, n27, n28, n29, n30, n31, n32, n33, n34,
     n35, n36, n37, n38, n39, n40, n41, n42, n43, n44, n45,
     n46, n47, n48, n49, n50, n51, n52, n53, n54, n55, n56,
     n57, n58, n59, n60, n61, n62, n63, n64] =
-      hash(string, ngram_size, :siphash, :list)
+      do_hash(string, ngram_size, :siphash, :list)
 
     <<n1::1, n2::1, n3::1, n4::1, n5::1, n6::1, n7::1, n8::1, n9::1, n10::1, n11::1, n12::1,
       n13::1, n14::1, n15::1, n16::1, n17::1, n18::1, n19::1, n20::1, n21::1, n22::1, n23::1,
@@ -160,7 +160,7 @@ defmodule Similarity.Simhash do
       n57::1, n58::1, n59::1, n60::1, n61::1, n62::1, n63::1, n64::1>>
   end
 
-  def hash(string, ngram_size, :md5, :binary) do
+  defp do_hash(string, ngram_size, :md5, :binary) do
     [n1, n2, n3, n4, n5, n6, n7, n8, n9, n10, n11, n12,
     n13, n14, n15, n16, n17, n18, n19, n20, n21, n22, n23,
     n24, n25, n26, n27, n28, n29, n30, n31, n32, n33, n34,
@@ -173,7 +173,7 @@ defmodule Similarity.Simhash do
     n101, n102, n103, n104, n105, n106, n107, n108, n109, n110,
     n111, n112, n113, n114, n115, n116, n117, n118, n119, n120,
     n121, n122, n123, n124, n125, n126, n127, n128] =
-      hash(string, ngram_size, :md5, :list)
+      do_hash(string, ngram_size, :md5, :list)
 
     <<n1::1, n2::1, n3::1, n4::1, n5::1, n6::1, n7::1, n8::1, n9::1, n10::1, n11::1, n12::1,
       n13::1, n14::1, n15::1, n16::1, n17::1, n18::1, n19::1, n20::1, n21::1, n22::1, n23::1,
@@ -189,7 +189,7 @@ defmodule Similarity.Simhash do
       n121::1, n122::1, n123::1, n124::1, n125::1, n126::1, n127::1, n128::1>>
   end
 
-  def hash(string, ngram_size, :sha256, :binary) do
+  defp do_hash(string, ngram_size, :sha256, :binary) do
     [n1, n2, n3, n4, n5, n6, n7, n8, n9, n10, n11, n12,
     n13, n14, n15, n16, n17, n18, n19, n20, n21, n22, n23,
     n24, n25, n26, n27, n28, n29, n30, n31, n32, n33, n34,
@@ -215,7 +215,7 @@ defmodule Similarity.Simhash do
     n231, n232, n233, n234, n235, n236, n237, n238, n239, n240,
     n241, n242, n243, n244, n245, n246, n247, n248, n249, n250,
     n251, n252, n253, n254, n255, n256] =
-      hash(string, ngram_size, :sha256, :list)
+      do_hash(string, ngram_size, :sha256, :list)
 
     <<n1::1, n2::1, n3::1, n4::1, n5::1, n6::1, n7::1, n8::1, n9::1, n10::1, n11::1, n12::1,
       n13::1, n14::1, n15::1, n16::1, n17::1, n18::1, n19::1, n20::1, n21::1, n22::1, n23::1,
