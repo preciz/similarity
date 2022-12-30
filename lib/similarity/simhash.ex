@@ -21,6 +21,7 @@ defmodule Similarity.Simhash do
 
   ## Options
     * `:ngram_size` - defaults to 3
+    * `:hash_function` - defaults to :siphash, available options are :siphash, :md5, :sha256
 
   ## Examples
 
