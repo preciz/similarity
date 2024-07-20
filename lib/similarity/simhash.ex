@@ -266,7 +266,7 @@ defmodule Similarity.Simhash do
   end
 
   @doc """
-  Returns Hamming distance between the `left` and `right` hash,
+  Returns the Hamming distance between the `left` and `right` hash,
   given as lists of bits.
 
   ## Examples
