@@ -20,7 +20,7 @@ end
 
 ## Cosine Similarity
 
-Cosine similarity is not sensitive to the scale of the vector!
+Cosine similarity is not sensitive to the scale of the vector:
 
 ```elixir
 Similarity.cosine([1,2,3], [1,2,3])
