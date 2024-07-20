@@ -1,0 +1,40 @@
+name: test
+
+on:
+  pull_request:
+  push:
+      branches:
+      - master
+
+jobs:
+  mix_test:
+    name: mix test (OTP ${{matrix.otp}} | Elixir ${{matrix.elixir}})
+
+    env:
+      MIX_ENV: test
+
+    strategy:
+      matrix:
+        include:
+          - elixir: 1.14.3
+            otp: 25.1
+            lint: true
+            installer: true
+
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+    - name: Set up Elixir
+      uses: erlef/setup-beam@v1
+      with:
+        elixir-version: ${{matrix.elixir}}
+        otp-version: ${{matrix.otp}}
+
+    - name: Install Dependencies
+      run: mix deps.get --only test
+
+    - name: Run Tests
+      run: mix test

@@ -1,6 +1,6 @@
 # Similarity
 
-[![Build Status](https://travis-ci.org/preciz/similarity.svg?branch=master)](https://travis-ci.org/preciz/similarity)
+[![test](https://github.com/preciz/tmp/actions/workflows/test.yml/badge.svg)](https://github.com/preciz/tmp/actions/workflows/test.yml)
 
 Cosine similarity & Simhash implementation
 
