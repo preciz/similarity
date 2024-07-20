@@ -1,6 +1,6 @@
 # Similarity
 
-[![test](https://github.com/preciz/tmp/actions/workflows/test.yml/badge.svg)](https://github.com/preciz/tmp/actions/workflows/test.yml)
+[![test](https://github.com/preciz/similarity/actions/workflows/test.yml/badge.svg)](https://github.com/preciz/similarity/actions/workflows/test.yml)
 
 Cosine similarity & Simhash implementation
 
