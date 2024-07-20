@@ -33,7 +33,7 @@ defmodule Similarity.Cosine do
   end
 
   @doc """
-  Returns `Similarity.cosine_srol/2` similarity between two pairs of ids (id_a, id_b) in `%Cosine{}`
+  Returns `Similarity.cosine_srol/2` similarity between two pairs of ids (id_a, id_b) in `%Cosine{}`.
 
   ## Examples
 

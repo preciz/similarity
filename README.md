@@ -49,9 +49,9 @@ s |> Similarity.Cosine.between("a", "b")
 1.9967471152702767
 ```
 
-```Similarity.cosine_srol/2```
+`Similarity.cosine_srol/2`
 Cosine similarity between two vectors, multiplied by the square root of the length of the vectors.
-(In my experience where number of common attributes don't match between some vectros this gives a better value).
+(In my experience, where the number of common attributes doesn't match between some vectors, this gives a better value.)
 
 ```elixir
 a = [1,2,3,4]
