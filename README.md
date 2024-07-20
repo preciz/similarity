@@ -13,7 +13,7 @@ Add `similarity` to your list of dependencies in `mix.exs`:
 ```elixir
 def deps do
   [
-    {:similarity, "~> 0.2"}
+    {:similarity, "~> 0.4"}
   ]
 end
 ```
