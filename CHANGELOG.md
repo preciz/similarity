@@ -8,6 +8,8 @@ Release dates are based on the [Hex.pm release history](https://hex.pm/packages/
 
 ## [Unreleased]
 
+## [0.5.0] - 2026-08-23
+
 ### Added
 
 - Added Credo 1.7.19 for strict static analysis in development and test environments.
@@ -117,7 +119,8 @@ Release dates are based on the [Hex.pm release history](https://hex.pm/packages/
 - Added `Similarity.Cosine` for accumulating IDs and their attributes, comparing
   entries, and streaming all unique similarity pairs.
 
-[Unreleased]: https://github.com/preciz/similarity/compare/v0.4.0...HEAD
+[Unreleased]: https://github.com/preciz/similarity/compare/v0.5.0...HEAD
+[0.5.0]: https://github.com/preciz/similarity/compare/v0.4.0...v0.5.0
 [0.4.0]: https://github.com/preciz/similarity/compare/v0.3.0...v0.4.0
 [0.3.0]: https://github.com/preciz/similarity/compare/v0.2.4...v0.3.0
 [0.2.4]: https://github.com/preciz/similarity/compare/v0.2.3...v0.2.4

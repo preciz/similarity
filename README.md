@@ -2,7 +2,7 @@
 
 [![test](https://github.com/preciz/similarity/actions/workflows/test.yml/badge.svg)](https://github.com/preciz/similarity/actions/workflows/test.yml)
 
-Cosine similarity & Simhash implementation
+Cosine similarity, Simhash, and Sørensen–Dice implementations.
 
 Full documentation can be found at [https://hexdocs.pm/similarity](https://hexdocs.pm/similarity).
 
@@ -13,7 +13,7 @@ Add `similarity` to your list of dependencies in `mix.exs`:
 ```elixir
 def deps do
   [
-    {:similarity, "~> 0.4"}
+    {:similarity, "~> 0.5"}
   ]
 end
 ```
@@ -78,6 +78,13 @@ right = "porchetta pork loin. Leberkas ball tip biltong, beef ribs"
 
 Similarity.simhash(left, right, ngram_size: 3)
 0.484375
+```
+
+## Sørensen–Dice
+
+```elixir
+Similarity.sorensen_dice("this that", "just that")
+0.42857142857142855
 ```
 
 ## Performance

@@ -1,7 +1,7 @@
 defmodule Similarity.MixProject do
   use Mix.Project
 
-  @version "0.4.0"
+  @version "0.5.0"
 
   def project do
     [
@@ -14,7 +14,7 @@ defmodule Similarity.MixProject do
       source_url: "https://github.com/preciz/similarity",
       name: "Similarity",
       docs: docs(),
-      description: "A library for cosine similarity & simhash calculation",
+      description: "Cosine similarity, Simhash, and Sorensen-Dice implementations",
       package: package()
     ]
   end

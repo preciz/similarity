@@ -5,6 +5,8 @@ defmodule Similarity do
   `Similarity.Cosine` - easy cosine similarity calculation
 
   `Similarity.Simhash` - simhash similarity calculation between two strings
+
+  `Similarity.SorensenDice` - Sorensen-Dice similarity for strings and collections
   """
 
   @doc """
