@@ -28,6 +28,7 @@ Release dates are based on the [Hex.pm release history](https://hex.pm/packages/
 - Fixed comparisons without shared attributes raising an arithmetic error.
 - Replaced incidental errors for missing cosine entry IDs with a clear `ArgumentError`.
 - Added explicit errors for unequal-length and zero-magnitude cosine vectors.
+- Added consistent Simhash validation for n-gram sizes, hash functions, and return types.
 
 ## [0.4.0] - 2022-12-29
 

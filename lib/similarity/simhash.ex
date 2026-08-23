@@ -14,6 +14,8 @@ defmodule Similarity.Simhash do
 
   @hash_functions [:siphash, :md5, :sha256]
   @hash_function_bits %{siphash: 64, md5: 128, sha256: 256}
+  @return_types [:list, :binary, :int64_unsigned, :int64_signed]
+  @integer_return_types [:int64_unsigned, :int64_signed]
   @siphash_key "0123456789ABCDEF"
 
   @doc """
@@ -23,6 +25,9 @@ defmodule Similarity.Simhash do
   ## Options
     * `:ngram_size` - defaults to 3
     * `:hash_function` - defaults to :siphash, available options are :siphash, :md5, :sha256
+
+  Raises `ArgumentError` for invalid options or strings shorter than `:ngram_size`.
+  The `:return_type` option is only supported by `hash/2`.
 
   ## Examples
 
@@ -38,22 +43,17 @@ defmodule Similarity.Simhash do
     ngram_size = options[:ngram_size] || 3
     hash_function = options[:hash_function] || :siphash
 
-    if String.length(left) < ngram_size or String.length(right) < ngram_size do
-      raise ArgumentError, """
-        left and right strings must be at least #{inspect(ngram_size)} characters long.
-        when using ngram_size of #{inspect(ngram_size)}
-      """
-    end
+    validate_options!(ngram_size, hash_function, :list)
+    validate_similarity_options!(options)
+    validate_length!(left, ngram_size)
+    validate_length!(right, ngram_size)
 
-    if hash_function not in @hash_functions do
-      raise ArgumentError, """
-        hash_function must be one of #{inspect(@hash_functions)}
-      """
-    end
+    left_hash = do_hash(left, ngram_size, hash_function, :list)
+    right_hash = do_hash(right, ngram_size, hash_function, :list)
 
     hash_similarity(
-      hash(left, options),
-      hash(right, options),
+      left_hash,
+      right_hash,
       @hash_function_bits[hash_function]
     )
   end
@@ -68,6 +68,9 @@ defmodule Similarity.Simhash do
     * `:return_type` - defaults to :list, available options are :list, :int64_unsigned, :int64_signed, :binary
 
   The return types `:int64_unsigned` and `:int64_signed` are only available for the `:siphash` hash function.
+
+  Raises `ArgumentError` for invalid options, incompatible hash and return types,
+  or strings shorter than `:ngram_size`.
 
   ## Examples
 
@@ -87,15 +90,13 @@ defmodule Similarity.Simhash do
     hash_function = options[:hash_function] || :siphash
     return_type = options[:return_type] || :list
 
+    validate_options!(ngram_size, hash_function, return_type)
+    validate_length!(string, ngram_size)
+
     do_hash(string, ngram_size, hash_function, return_type)
   end
 
   defp do_hash(string, ngram_size, hash_function, :list) do
-    if String.length(string) < ngram_size do
-      raise ArgumentError,
-            "string must be at least #{ngram_size} characters long when using ngram_size #{ngram_size}"
-    end
-
     string
     |> FastNgram.letter_ngrams(ngram_size)
     |> hash_ngrams(hash_function)
@@ -148,6 +149,42 @@ defmodule Similarity.Simhash do
     bits
     |> Enum.map(&<<&1::1>>)
     |> :erlang.list_to_bitstring()
+  end
+
+  defp validate_options!(ngram_size, hash_function, return_type) do
+    cond do
+      not is_integer(ngram_size) or ngram_size <= 0 ->
+        raise ArgumentError,
+              ":ngram_size must be a positive integer, got #{inspect(ngram_size)}"
+
+      hash_function not in @hash_functions ->
+        raise ArgumentError,
+              ":hash_function must be one of #{inspect(@hash_functions)}, got #{inspect(hash_function)}"
+
+      return_type not in @return_types ->
+        raise ArgumentError,
+              ":return_type must be one of #{inspect(@return_types)}, got #{inspect(return_type)}"
+
+      return_type in @integer_return_types and hash_function != :siphash ->
+        raise ArgumentError,
+              "#{inspect(return_type)} return type is only available with :siphash"
+
+      true ->
+        :ok
+    end
+  end
+
+  defp validate_similarity_options!(options) do
+    if options[:return_type] do
+      raise ArgumentError, ":return_type is not supported by similarity/3"
+    end
+  end
+
+  defp validate_length!(string, ngram_size) do
+    if String.length(string) < ngram_size do
+      raise ArgumentError,
+            "string must be at least #{ngram_size} characters long when using ngram_size #{ngram_size}"
+    end
   end
 
   @doc false

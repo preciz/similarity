@@ -18,6 +18,34 @@ defmodule Similarity.SimhashTest do
     assert_raise ArgumentError, ~r/hash_function must be one of/, fn ->
       Simhash.similarity("abc", "def", hash_function: :unsupported)
     end
+
+    assert_raise ArgumentError, ~r/hash_function must be one of/, fn ->
+      Simhash.hash("abc", hash_function: :unsupported)
+    end
+  end
+
+  test "ngram_size must be a positive integer" do
+    for ngram_size <- [0, -1, 1.5, "3"] do
+      assert_raise ArgumentError, ~r/ngram_size must be a positive integer/, fn ->
+        Simhash.hash("abc", ngram_size: ngram_size)
+      end
+    end
+  end
+
+  test "return_type must be supported by the hash function" do
+    assert_raise ArgumentError, ~r/return_type must be one of/, fn ->
+      Simhash.hash("abc", return_type: :unsupported)
+    end
+
+    assert_raise ArgumentError, ":int64_signed return type is only available with :siphash", fn ->
+      Simhash.hash("abc", hash_function: :md5, return_type: :int64_signed)
+    end
+  end
+
+  test "similarity rejects return_type" do
+    assert_raise ArgumentError, ":return_type is not supported by similarity/3", fn ->
+      Simhash.similarity("abc", "def", return_type: :binary)
+    end
   end
 
   test "similarity of identical strings is 1" do
