@@ -89,10 +89,7 @@ Similarity.sorensen_dice("this that", "just that")
 
 ## Performance
 
-The reproducible [Simhash benchmark](bench/simhash.exs) uses `Mix.install/1` to
-install pinned versions of Benchee, Similarity, and
-[simhash-ex](https://github.com/UniversalAvenue/simhash-ex). It verifies that both
-implementations return the same score before benchmarking them:
+Reproduce the [Simhash benchmark](bench/simhash.exs):
 
 ```console
 $ elixir bench/simhash.exs

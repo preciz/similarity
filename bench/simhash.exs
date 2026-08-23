@@ -10,19 +10,12 @@ Mix.install([
 left = "pork belly jerky brisket tenderloin shank kevin spare ribs"
 right = "porchetta pork loin. Leberkas ball tip biltong, beef ribs"
 
-similarity_score = Similarity.simhash(left, right)
-simhash_ex_score = Simhash.similarity(left, right)
-
-unless similarity_score == simhash_ex_score do
-  raise "implementations returned different scores: " <>
-          "#{similarity_score} != #{simhash_ex_score}"
-end
-
 Benchee.run(
   %{
     "similarity 0.5.1" => fn -> Similarity.simhash(left, right) end,
     "simhash-ex e04aa01" => fn -> Simhash.similarity(left, right) end
   },
+  pre_check: :all_same,
   warmup: 2,
   time: 5,
   memory_time: 2
