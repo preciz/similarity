@@ -26,6 +26,7 @@ Release dates are based on the [Hex.pm release history](https://hex.pm/packages/
 - Corrected a typo in the `Similarity.Cosine` module documentation.
 - Fixed `Similarity.Cosine.stream/1` crashing when it contains no entries.
 - Fixed comparisons without shared attributes raising an arithmetic error.
+- Replaced incidental errors for missing cosine entry IDs with a clear `ArgumentError`.
 
 ## [0.4.0] - 2022-12-29
 

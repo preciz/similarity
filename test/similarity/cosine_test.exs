@@ -83,6 +83,16 @@ defmodule Similarity.CosineTest do
     assert Cosine.between(s, "a", "b") == 0.0
   end
 
+  test "between raises ArgumentError identifying a missing ID" do
+    s = Cosine.new() |> Cosine.add(:known, [{"x", 1}])
+
+    for {id_a, id_b} <- [{:missing, :known}, {:known, :missing}] do
+      assert_raise ArgumentError, "unknown cosine entry ID: :missing", fn ->
+        Cosine.between(s, id_a, id_b)
+      end
+    end
+  end
+
   test "stream" do
     s = Cosine.new()
     s = Cosine.add(s, "a", [{"attr", 1}])

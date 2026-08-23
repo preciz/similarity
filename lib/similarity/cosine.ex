@@ -35,6 +35,9 @@ defmodule Similarity.Cosine do
   @doc """
   Returns `Similarity.cosine_srol/2` similarity between two pairs of ids (id_a, id_b) in `%Cosine{}`.
 
+  Returns `0.0` when the entries have no attributes in common. Raises `ArgumentError`
+  when either ID is missing.
+
   ## Examples
 
       s = Similarity.Cosine.new
@@ -48,8 +51,8 @@ defmodule Similarity.Cosine do
   end
 
   defp do_between(map, id_a, id_b) do
-    attributes_a = Map.get(map, id_a)
-    attributes_b = Map.get(map, id_b)
+    attributes_a = fetch_attributes!(map, id_a)
+    attributes_b = fetch_attributes!(map, id_b)
 
     keys_a = attributes_a |> Enum.map(fn {k, _v} -> k end) |> MapSet.new()
     keys_b = attributes_b |> Enum.map(fn {k, _v} -> k end) |> MapSet.new()
@@ -73,6 +76,13 @@ defmodule Similarity.Cosine do
 
   # Reversing retains the first value for duplicate keys, matching Enum.find/2.
   defp index_attributes(attributes), do: attributes |> Enum.reverse() |> Map.new()
+
+  defp fetch_attributes!(map, id) do
+    case Map.fetch(map, id) do
+      {:ok, attributes} -> attributes
+      :error -> raise ArgumentError, "unknown cosine entry ID: #{inspect(id)}"
+    end
+  end
 
   @doc """
   Returns a stream of all unique pairs of similarities in `%Cosine{}.map`
