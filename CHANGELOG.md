@@ -18,7 +18,7 @@ Release dates are based on the [Hex.pm release history](https://hex.pm/packages/
 
 - Expanded the documentation and test coverage.
 - Added a GitHub Actions test workflow.
-- Updated Benchee to 1.5, ExDoc to 0.40, and FastNgram to 1.3.
+- Updated ExDoc to 0.40 and FastNgram to 1.3.
 - Raised the minimum supported Elixir version from 1.7 to 1.13 and expanded CI
   to cover the minimum and current Elixir/Erlang runtimes.
 - Added CI checks for formatting, compiler warnings, strict Credo analysis, and
@@ -33,6 +33,7 @@ Release dates are based on the [Hex.pm release history](https://hex.pm/packages/
 
 - Removed the undocumented `Similarity.Cosine.stream_next/1` and
   `Similarity.Cosine.do_add_attributes/3` implementation helpers from the public API.
+- Removed the unused Benchee development dependency.
 
 ### Fixed
 
