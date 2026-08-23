@@ -16,7 +16,7 @@ Release dates are based on the [Hex.pm release history](https://hex.pm/packages/
 
 - Expanded the documentation and test coverage.
 - Added a GitHub Actions test workflow.
-- Updated the ExDoc development dependency to 0.34.
+- Updated Benchee to 1.5, ExDoc to 0.40, and FastNgram to 1.3.
 - Improved Simhash performance by accumulating hash votes in one pass and replacing
   expanded fixed-size bit conversions with shared conversion functions.
 - Improved cosine pair comparisons by indexing attributes before matching them.

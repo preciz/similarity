@@ -26,10 +26,10 @@ defmodule Similarity.MixProject do
 
   defp deps do
     [
-      {:fast_ngram, "~> 1.0"},
+      {:fast_ngram, "~> 1.3"},
       {:siphash, "~> 3.0"},
-      {:ex_doc, "~> 0.34", only: :dev, runtime: false},
-      {:benchee, "~> 1.1", only: :dev},
+      {:ex_doc, "~> 0.40.3", only: :dev, runtime: false},
+      {:benchee, "~> 1.5", only: :dev},
       {:credo, "~> 1.7.19", only: [:dev, :test], runtime: false}
     ]
   end
