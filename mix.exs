@@ -29,7 +29,8 @@ defmodule Similarity.MixProject do
       {:fast_ngram, "~> 1.0"},
       {:siphash, "~> 3.0"},
       {:ex_doc, "~> 0.34", only: :dev, runtime: false},
-      {:benchee, "~> 1.1", only: :dev}
+      {:benchee, "~> 1.1", only: :dev},
+      {:credo, "~> 1.7.19", only: [:dev, :test], runtime: false}
     ]
   end
 
