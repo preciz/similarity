@@ -14,6 +14,12 @@ defmodule Similarity.SimhashTest do
     end
   end
 
+  test "unsupported hash function raises ArgumentError" do
+    assert_raise ArgumentError, ~r/hash_function must be one of/, fn ->
+      Simhash.similarity("abc", "def", hash_function: :unsupported)
+    end
+  end
+
   test "similarity of identical strings is 1" do
     assert Simhash.similarity("aaa", "aaa") == 1
     assert Simhash.similarity("aaa", "aaa", hash_function: :md5) == 1
@@ -30,6 +36,10 @@ defmodule Similarity.SimhashTest do
     assert Similarity.simhash("we spoke", "bespoke") == 0.703125
     assert Similarity.simhash("we spoke", "bespoke", hash_function: :md5) == 0.71875
     assert Similarity.simhash("we spoke", "bespoke", hash_function: :sha256) == 0.6796875
+  end
+
+  test "hash similarity uses the length of the hashes" do
+    assert Simhash.hash_similarity([1, 0, 1, 0], [1, 1, 0, 0]) == 0.5
   end
 
   test "integer siphash of 1 char string is the same as simhash of it" do
