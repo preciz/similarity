@@ -30,6 +30,18 @@ defmodule SimilarityTest do
     assert Similarity.dot_product([11, 23, 41], [7, 9, 13]) == 817
   end
 
+  test "Euclidean dot product requires equal-length vectors" do
+    for {left, right} <- [{[1], [1, 2]}, {[1, 2], [1]}] do
+      assert_raise ArgumentError, "vectors must have the same length", fn ->
+        Similarity.dot_product(left, right)
+      end
+    end
+
+    assert_raise ArgumentError, "vectors must have the same length", fn ->
+      Similarity.dot_product([1], [1, 2], 10)
+    end
+  end
+
   test "Euclidean magnitude" do
     assert Similarity.magnitude([2]) == 2.0
 

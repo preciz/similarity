@@ -40,8 +40,8 @@ defmodule Similarity.Simhash do
   """
   @spec similarity(String.t(), String.t(), keyword()) :: float()
   def similarity(left, right, options \\ []) when is_binary(left) and is_binary(right) do
-    ngram_size = options[:ngram_size] || 3
-    hash_function = options[:hash_function] || :siphash
+    ngram_size = Keyword.get(options, :ngram_size, 3)
+    hash_function = Keyword.get(options, :hash_function, :siphash)
 
     validate_options!(ngram_size, hash_function, :list)
     validate_similarity_options!(options)
@@ -86,9 +86,9 @@ defmodule Similarity.Simhash do
   """
   @spec hash(String.t(), keyword()) :: list(0 | 1) | integer() | binary()
   def hash(string, options) do
-    ngram_size = options[:ngram_size] || 3
-    hash_function = options[:hash_function] || :siphash
-    return_type = options[:return_type] || :list
+    ngram_size = Keyword.get(options, :ngram_size, 3)
+    hash_function = Keyword.get(options, :hash_function, :siphash)
+    return_type = Keyword.get(options, :return_type, :list)
 
     validate_options!(ngram_size, hash_function, return_type)
     validate_length!(string, ngram_size)
@@ -175,7 +175,7 @@ defmodule Similarity.Simhash do
   end
 
   defp validate_similarity_options!(options) do
-    if options[:return_type] do
+    if Keyword.has_key?(options, :return_type) do
       raise ArgumentError, ":return_type is not supported by similarity/3"
     end
   end
@@ -200,6 +200,8 @@ defmodule Similarity.Simhash do
   Returns the Hamming distance between the `left` and `right` hash,
   given as lists of bits.
 
+  Raises `ArgumentError` when the hashes have different lengths.
+
   ## Examples
 
       iex> Similarity.Simhash.hamming_distance([1, 1, 0, 1, 0], [0, 1, 1, 1, 0])
@@ -217,6 +219,10 @@ defmodule Similarity.Simhash do
   end
 
   def hamming_distance([], [], acc), do: acc
+
+  def hamming_distance(left, right, _acc) when is_list(left) and is_list(right) do
+    raise ArgumentError, "hashes must have the same length"
+  end
 
   defp bitstring_to_list(<<1::1, data::bitstring>>), do: [1 | bitstring_to_list(data)]
   defp bitstring_to_list(<<0::1, data::bitstring>>), do: [-1 | bitstring_to_list(data)]

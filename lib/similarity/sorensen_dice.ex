@@ -11,8 +11,8 @@ defmodule Similarity.SorensenDice do
 
   Attribute can be a string, list or a MapSet.
 
-  Raises `ArgumentError` when either string is shorter than `:ngram_size`, including
-  when the strings are identical.
+  Raises `ArgumentError` when `:ngram_size` is not a positive integer or either
+  string is shorter than it, including when the strings are identical.
 
   ## Examples
 
@@ -39,6 +39,7 @@ defmodule Similarity.SorensenDice do
 
   def sorensen_dice(string1, string2, options) when is_binary(string1) and is_binary(string2) do
     ngram_size = Keyword.get(options, :ngram_size, 3)
+    validate_ngram_size!(ngram_size)
 
     if String.length(string1) < ngram_size or String.length(string2) < ngram_size do
       raise ArgumentError,
@@ -67,6 +68,13 @@ defmodule Similarity.SorensenDice do
     case intersect_length do
       0 -> 0.0
       _ -> 2 * intersect_length / (MapSet.size(mapset1) + MapSet.size(mapset2))
+    end
+  end
+
+  defp validate_ngram_size!(ngram_size) do
+    if not is_integer(ngram_size) or ngram_size <= 0 do
+      raise ArgumentError,
+            ":ngram_size must be a positive integer, got #{inspect(ngram_size)}"
     end
   end
 end

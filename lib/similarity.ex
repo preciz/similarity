@@ -73,6 +73,8 @@ defmodule Similarity do
   ## Example:
       iex> Similarity.dot_product([1, 2], [3, 4])
       11
+
+  Raises `ArgumentError` when the vectors have different lengths.
   """
   def dot_product(list_a, list_b, acc \\ 0)
 
@@ -84,6 +86,10 @@ defmodule Similarity do
     new_acc = h_a * h_b + acc
 
     dot_product(t_a, t_b, new_acc)
+  end
+
+  def dot_product(list_a, list_b, _acc) when is_list(list_a) and is_list(list_b) do
+    raise ArgumentError, "vectors must have the same length"
   end
 
   @doc """

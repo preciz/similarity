@@ -36,6 +36,8 @@ Release dates are based on the [Hex.pm release history](https://hex.pm/packages/
 - Added explicit errors for unequal-length and zero-magnitude cosine vectors.
 - Added consistent Simhash validation for n-gram sizes, hash functions, and return types.
 - Applied Sørensen–Dice length validation consistently to identical strings.
+- Rejected explicit invalid Simhash option values, validated Sørensen–Dice n-gram
+  sizes, and added clear unequal-length errors to dot-product and Hamming helpers.
 
 ## [0.4.0] - 2022-12-29
 

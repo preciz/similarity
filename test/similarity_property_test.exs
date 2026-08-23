@@ -22,7 +22,7 @@ defmodule SimilarityPropertyTest do
     end
   end
 
-  property "cosine similarity rejects randomized unequal vector lengths" do
+  property "vector and hash operations reject randomized unequal lengths" do
     check all(
             shorter_length <- integer(0..20),
             difference <- integer(1..20),
@@ -35,6 +35,22 @@ defmodule SimilarityPropertyTest do
 
       assert_raise ArgumentError, ~r/vectors must have the same length/, fn ->
         Similarity.cosine(longer, shorter)
+      end
+
+      assert_raise ArgumentError, "vectors must have the same length", fn ->
+        Similarity.dot_product(shorter, longer)
+      end
+
+      assert_raise ArgumentError, "vectors must have the same length", fn ->
+        Similarity.dot_product(longer, shorter)
+      end
+
+      assert_raise ArgumentError, "hashes must have the same length", fn ->
+        Similarity.Simhash.hamming_distance(shorter, longer)
+      end
+
+      assert_raise ArgumentError, "hashes must have the same length", fn ->
+        Similarity.Simhash.hamming_distance(longer, shorter)
       end
     end
   end
