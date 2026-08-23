@@ -37,6 +37,7 @@ defmodule Similarity.MixProject do
 
   defp package do
     [
+      files: ~w(lib bench .formatter.exs mix.exs README.md LICENSE CHANGELOG.md),
       maintainers: ["Barna Kovacs"],
       licenses: ["MIT"],
       links: %{"GitHub" => "https://github.com/preciz/similarity"}

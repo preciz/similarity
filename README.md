@@ -88,28 +88,25 @@ Similarity.sorensen_dice("this that", "just that")
 ```
 
 ## Performance
-Similarity.simhash is 2x faster than simhash-ex v1.1.0 package.
 
+The reproducible [Simhash benchmark](bench/simhash.exs) uses `Mix.install/1` to
+install pinned versions of Benchee, Similarity, and
+[simhash-ex](https://github.com/UniversalAvenue/simhash-ex). It verifies that both
+implementations return the same score before benchmarking them:
+
+```console
+$ elixir bench/simhash.exs
 ```
-Benchmark suite executing with the following configuration:
-warmup: 2 s
-time: 5 s
-memory time: 0 ns
-parallel: 1
-inputs: none specified
-Estimated total run time: 14 s
 
-Benchmarking simhash-ex...
-Benchmarking similarity.simhash...
+On Linux with an AMD Ryzen 7 8845HS, Elixir 1.20.3, and Erlang/OTP 29.0.5:
 
-Name                         ips        average  deviation         median         99th %
-similarity.simhash        3.67 K      272.69 μs     ±6.50%      267.84 μs      353.05 μs
-simhash-ex                1.75 K      572.14 μs    ±12.31%      552.22 μs      781.02 μs
+| Implementation | Average time | Throughput | Memory |
+| --- | ---: | ---: | ---: |
+| Similarity 0.5.1 | 55.80 μs | 17.92 K ips | 126.82 KB |
+| simhash-ex `e04aa01` | 143.60 μs | 6.96 K ips | 262.54 KB |
 
-Comparison:
-similarity.simhash        3.67 K
-simhash-ex                1.75 K - 2.10x slower +299.46 μs
-```
+For this input, Similarity was 2.57× faster and used 52% less memory. Results vary
+by hardware and runtime version.
 
 ## License
 

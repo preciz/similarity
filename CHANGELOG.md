@@ -8,6 +8,11 @@ Release dates are based on the [Hex.pm release history](https://hex.pm/packages/
 
 ## [Unreleased]
 
+### Changed
+
+- Replaced the historical Simhash performance claim with a packaged, reproducible
+  benchmark script using pinned Similarity, simhash-ex, and Benchee versions.
+
 ## [0.5.1] - 2026-08-23
 
 ### Changed
