@@ -8,6 +8,11 @@ Release dates are based on the [Hex.pm release history](https://hex.pm/packages/
 
 ## [Unreleased]
 
+### Changed
+
+- Short-circuited identical Simhash comparisons and single-ngram binary hashes
+  to avoid redundant hashing and bit normalization.
+
 ## [0.5.0] - 2026-08-23
 
 ### Added

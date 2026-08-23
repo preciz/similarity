@@ -48,14 +48,14 @@ defmodule Similarity.Simhash do
     validate_length!(left, ngram_size)
     validate_length!(right, ngram_size)
 
-    left_hash = do_hash(left, ngram_size, hash_function, :list)
-    right_hash = do_hash(right, ngram_size, hash_function, :list)
+    if left == right do
+      1.0
+    else
+      left_hash = do_hash(left, ngram_size, hash_function, :list)
+      right_hash = do_hash(right, ngram_size, hash_function, :list)
 
-    hash_similarity(
-      left_hash,
-      right_hash,
-      @hash_function_bits[hash_function]
-    )
+      hash_similarity(left_hash, right_hash, @hash_function_bits[hash_function])
+    end
   end
 
   @doc """
@@ -116,7 +116,16 @@ defmodule Similarity.Simhash do
   defp do_hash(string, ngram_size, hash_function, :binary)
        when hash_function in @hash_functions do
     string
-    |> do_hash(ngram_size, hash_function, :list)
+    |> FastNgram.letter_ngrams(ngram_size)
+    |> hash_ngrams_to_bitstring(hash_function)
+  end
+
+  defp hash_ngrams_to_bitstring([ngram], hash_function), do: hash_ngram(hash_function, ngram)
+
+  defp hash_ngrams_to_bitstring(ngrams, hash_function) do
+    ngrams
+    |> hash_ngrams(hash_function)
+    |> normalize_bits()
     |> bits_to_bitstring()
   end
 
