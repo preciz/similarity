@@ -107,4 +107,28 @@ defmodule Similarity.CosineTest do
   test "stream with no entries is empty" do
     assert Cosine.new() |> Cosine.stream() |> Enum.to_list() == []
   end
+
+  test "stream computes one pair at a time" do
+    cosine =
+      Cosine.new()
+      |> Cosine.add(:a, [{:value, 1}])
+      |> Cosine.add(:b, [{:value, 1}])
+      |> Cosine.add(:c, [{:value, 1}])
+
+    [left_id, right_id, zero_id] = Map.keys(cosine.map)
+
+    map =
+      cosine.map
+      |> Map.put(left_id, [{0, 1}])
+      |> Map.put(right_id, [{0, 1}])
+      |> Map.put(zero_id, [{0, 0}])
+
+    cosine = %Cosine{cosine | map: map}
+
+    assert cosine |> Cosine.stream() |> Enum.take(1) == [{left_id, right_id, 1.0}]
+
+    assert_raise ArgumentError, "cosine similarity is undefined for zero-magnitude vectors", fn ->
+      cosine |> Cosine.stream() |> Enum.take(2)
+    end
+  end
 end

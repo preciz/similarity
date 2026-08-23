@@ -39,14 +39,17 @@ defmodule Similarity do
             "vectors must have the same length, got #{length_a} and #{length_b}"
     end
 
-    magnitude_a = magnitude(list_a)
-    magnitude_b = magnitude(list_b)
+    {dot_product, squared_magnitude_a, squared_magnitude_b} =
+      cosine_components(list_a, list_b, 0, 0, 0)
+
+    magnitude_a = :math.sqrt(squared_magnitude_a)
+    magnitude_b = :math.sqrt(squared_magnitude_b)
 
     if magnitude_a == 0 or magnitude_b == 0 do
       raise ArgumentError, "cosine similarity is undefined for zero-magnitude vectors"
     end
 
-    dot_product(list_a, list_b) / (magnitude_a * magnitude_b)
+    dot_product / (magnitude_a * magnitude_b)
   end
 
   @doc """
@@ -108,9 +111,28 @@ defmodule Similarity do
   end
 
   def magnitude([h | tl], acc) do
-    square = :math.pow(h, 2)
-    new_acc = acc + square
+    new_acc = acc + h * h
 
     magnitude(tl, new_acc)
+  end
+
+  defp cosine_components([], [], dot_product, squared_magnitude_a, squared_magnitude_b) do
+    {dot_product, squared_magnitude_a, squared_magnitude_b}
+  end
+
+  defp cosine_components(
+         [head_a | tail_a],
+         [head_b | tail_b],
+         dot_product,
+         squared_magnitude_a,
+         squared_magnitude_b
+       ) do
+    cosine_components(
+      tail_a,
+      tail_b,
+      dot_product + head_a * head_b,
+      squared_magnitude_a + head_a * head_a,
+      squared_magnitude_b + head_b * head_b
+    )
   end
 end

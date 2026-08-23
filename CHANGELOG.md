@@ -26,6 +26,8 @@ Release dates are based on the [Hex.pm release history](https://hex.pm/packages/
 - Improved Simhash performance by accumulating hash votes in one pass and replacing
   expanded fixed-size bit conversions with shared conversion functions.
 - Improved cosine pair comparisons by indexing attributes before matching them.
+- Reduced cosine vector calculations to one numeric pass, removed intermediate
+  sets from attribute comparisons, and made cosine streams element-lazy.
 
 ### Fixed
 

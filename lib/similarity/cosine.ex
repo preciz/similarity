@@ -54,23 +54,21 @@ defmodule Similarity.Cosine do
     attributes_a = fetch_attributes!(map, id_a)
     attributes_b = fetch_attributes!(map, id_b)
 
-    keys_a = attributes_a |> Enum.map(fn {k, _v} -> k end) |> MapSet.new()
-    keys_b = attributes_b |> Enum.map(fn {k, _v} -> k end) |> MapSet.new()
+    values_b = index_attributes(attributes_b)
 
-    common_keys = MapSet.intersection(keys_a, keys_b)
+    {common_attributes_a, common_attributes_b} =
+      attributes_a
+      |> index_attributes()
+      |> Enum.reduce({[], []}, fn {key, value_a}, {common_values_a, common_values_b} ->
+        case Map.fetch(values_b, key) do
+          {:ok, value_b} -> {[value_a | common_values_a], [value_b | common_values_b]}
+          :error -> {common_values_a, common_values_b}
+        end
+      end)
 
-    if MapSet.size(common_keys) == 0 do
-      0.0
-    else
-      values_a = index_attributes(attributes_a)
-      values_b = index_attributes(attributes_b)
-
-      {common_attributes_a, common_attributes_b} =
-        common_keys
-        |> Enum.map(fn key -> {Map.fetch!(values_a, key), Map.fetch!(values_b, key)} end)
-        |> Enum.unzip()
-
-      Similarity.cosine_srol(common_attributes_a, common_attributes_b)
+    case common_attributes_a do
+      [] -> 0.0
+      _ -> Similarity.cosine_srol(common_attributes_a, common_attributes_b)
     end
   end
 
@@ -97,9 +95,9 @@ defmodule Similarity.Cosine do
   """
   def stream(%Cosine{map: map}) do
     Stream.resource(
-      fn -> {_all_ids = Map.keys(map), map} end,
+      fn -> {Map.keys(map), map} end,
       &stream_next/1,
-      fn _ -> nil end
+      fn _ -> :ok end
     )
   end
 
@@ -109,16 +107,27 @@ defmodule Similarity.Cosine do
   end
 
   @doc false
-  def stream_next({[_last | []], _map}) do
+  def stream_next({[_last], _map}) do
     {:halt, nil}
   end
 
   @doc false
-  def stream_next({[h_id | tl_ids], map}) do
-    {
-      tl_ids |> Enum.map(fn id -> {h_id, id, do_between(map, h_id, id)} end),
-      {tl_ids, map}
-    }
+  def stream_next({[left_id, right_id | remaining_ids], map}) do
+    next_ids = [right_id | remaining_ids]
+
+    {[{left_id, right_id, do_between(map, left_id, right_id)}],
+     {left_id, remaining_ids, next_ids, map}}
+  end
+
+  @doc false
+  def stream_next({left_id, [right_id | remaining_ids], next_ids, map}) do
+    {[{left_id, right_id, do_between(map, left_id, right_id)}],
+     {left_id, remaining_ids, next_ids, map}}
+  end
+
+  @doc false
+  def stream_next({_left_id, [], next_ids, map}) do
+    stream_next({next_ids, map})
   end
 
   @doc false
