@@ -21,8 +21,8 @@ jobs:
       matrix:
         include:
           - name: Minimum supported
-            elixir: "1.13.4"
-            otp: "24"
+            elixir: "1.14.5"
+            otp: "25"
             quality: false
           - name: Current
             elixir: "1.20"

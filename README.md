@@ -18,7 +18,7 @@ def deps do
 end
 ```
 
-Similarity requires Elixir 1.13 or later.
+Similarity requires Elixir 1.14 or later.
 
 ## Cosine Similarity
 

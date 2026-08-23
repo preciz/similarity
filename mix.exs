@@ -7,7 +7,7 @@ defmodule Similarity.MixProject do
     [
       app: :similarity,
       version: @version,
-      elixir: "~> 1.13",
+      elixir: "~> 1.14",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
       test_coverage: [summary: [threshold: 100]],
@@ -31,7 +31,7 @@ defmodule Similarity.MixProject do
       {:siphash, "~> 3.0"},
       {:ex_doc, "~> 0.40.3", only: :dev, runtime: false},
       {:credo, "~> 1.7.19", only: [:dev, :test], runtime: false},
-      {:stream_data, "~> 1.3.0", only: :test}
+      {:stream_data, "~> 1.4", only: :test}
     ]
   end
 

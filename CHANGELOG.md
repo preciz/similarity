@@ -18,8 +18,8 @@ Release dates are based on the [Hex.pm release history](https://hex.pm/packages/
 
 - Expanded the documentation and test coverage.
 - Added a GitHub Actions test workflow.
-- Updated ExDoc to 0.40 and FastNgram to 1.3.
-- Raised the minimum supported Elixir version from 1.7 to 1.13 and expanded CI
+- Updated ExDoc to 0.40, FastNgram to 1.3, and StreamData to 1.4.
+- Raised the minimum supported Elixir version from 1.7 to 1.14 and expanded CI
   to cover the minimum and current Elixir/Erlang runtimes.
 - Added CI checks for formatting, compiler warnings, strict Credo analysis, and
   100% test coverage.
