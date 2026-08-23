@@ -18,6 +18,8 @@ def deps do
 end
 ```
 
+Similarity requires Elixir 1.13 or later.
+
 ## Cosine Similarity
 
 Cosine similarity is not sensitive to the scale of the vector:

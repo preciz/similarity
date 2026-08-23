@@ -7,9 +7,10 @@ defmodule Similarity.MixProject do
     [
       app: :similarity,
       version: @version,
-      elixir: "~> 1.7",
+      elixir: "~> 1.13",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
+      test_coverage: [summary: [threshold: 100]],
       source_url: "https://github.com/preciz/similarity",
       name: "Similarity",
       docs: docs(),

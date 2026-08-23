@@ -17,6 +17,10 @@ Release dates are based on the [Hex.pm release history](https://hex.pm/packages/
 - Expanded the documentation and test coverage.
 - Added a GitHub Actions test workflow.
 - Updated Benchee to 1.5, ExDoc to 0.40, and FastNgram to 1.3.
+- Raised the minimum supported Elixir version from 1.7 to 1.13 and expanded CI
+  to cover the minimum and current Elixir/Erlang runtimes.
+- Added CI checks for formatting, compiler warnings, strict Credo analysis, and
+  100% test coverage.
 - Improved Simhash performance by accumulating hash votes in one pass and replacing
   expanded fixed-size bit conversions with shared conversion functions.
 - Improved cosine pair comparisons by indexing attributes before matching them.
