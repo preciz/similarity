@@ -1,6 +1,6 @@
 defmodule Similarity.Cosine do
   @moduledoc """
-  A struct that can be used to accumulate ids & attributes and calcuate similarity between them.
+  A struct that can be used to accumulate ids & attributes and calculate similarity between them.
   """
 
   alias Similarity.Cosine
