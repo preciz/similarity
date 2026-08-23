@@ -10,6 +10,20 @@ defmodule SimilarityTest do
     assert Similarity.cosine([1, 2], [-1, -2]) |> Float.round() == -1
   end
 
+  test "Cosine similarity requires equal-length vectors" do
+    assert_raise ArgumentError, "vectors must have the same length, got 1 and 2", fn ->
+      Similarity.cosine([1], [1, 2])
+    end
+  end
+
+  test "Cosine similarity is undefined for zero-magnitude vectors" do
+    for {left, right} <- [{[0, 0], [1, 2]}, {[1, 2], [0, 0]}, {[], []}] do
+      assert_raise ArgumentError,
+                   "cosine similarity is undefined for zero-magnitude vectors",
+                   fn -> Similarity.cosine(left, right) end
+    end
+  end
+
   test "Euclidean dot product" do
     assert Similarity.dot_product([1], [1]) == 1
 

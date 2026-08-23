@@ -26,9 +26,27 @@ defmodule Similarity do
 
   ## Example:
       Similarity.cosine([1, 2, 3], [1, 2, 8])
+
+  Raises `ArgumentError` when the vectors have different lengths or either vector
+  has zero magnitude.
   """
-  def cosine(list_a, list_b) when length(list_a) == length(list_b) do
-    dot_product(list_a, list_b) / (magnitude(list_a) * magnitude(list_b))
+  def cosine(list_a, list_b) when is_list(list_a) and is_list(list_b) do
+    length_a = length(list_a)
+    length_b = length(list_b)
+
+    if length_a != length_b do
+      raise ArgumentError,
+            "vectors must have the same length, got #{length_a} and #{length_b}"
+    end
+
+    magnitude_a = magnitude(list_a)
+    magnitude_b = magnitude(list_b)
+
+    if magnitude_a == 0 or magnitude_b == 0 do
+      raise ArgumentError, "cosine similarity is undefined for zero-magnitude vectors"
+    end
+
+    dot_product(list_a, list_b) / (magnitude_a * magnitude_b)
   end
 
   @doc """
