@@ -6,5 +6,9 @@ defmodule Similarity.SorensenDiceTest do
     assert_raise ArgumentError, fn ->
       Similarity.SorensenDice.sorensen_dice("a", "b", ngram_size: 2)
     end
+
+    assert_raise ArgumentError, fn ->
+      Similarity.SorensenDice.sorensen_dice("a", "a", ngram_size: 2)
+    end
   end
 end

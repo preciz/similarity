@@ -11,6 +11,9 @@ defmodule Similarity.SorensenDice do
 
   Attribute can be a string, list or a MapSet.
 
+  Raises `ArgumentError` when either string is shorter than `:ngram_size`, including
+  when the strings are identical.
+
   ## Examples
 
       iex> Similarity.SorensenDice.sorensen_dice("alma", "korte")
@@ -34,22 +37,22 @@ defmodule Similarity.SorensenDice do
   """
   def sorensen_dice(string1, string2, options \\ [])
 
-  def sorensen_dice(same, same, _opts) when is_binary(same), do: 1.0
-
   def sorensen_dice(string1, string2, options) when is_binary(string1) and is_binary(string2) do
     ngram_size = Keyword.get(options, :ngram_size, 3)
 
     if String.length(string1) < ngram_size or String.length(string2) < ngram_size do
-      raise ArgumentError, """
-        left and right strings must be at least #{ngram_size} characters long.
-        when using ngram_size of #{ngram_size}
-      """
+      raise ArgumentError,
+            "left and right strings must be at least #{ngram_size} characters long when using ngram_size #{ngram_size}"
     end
 
-    ngrams1 = FastNgram.letter_ngrams(string1, ngram_size)
-    ngrams2 = FastNgram.letter_ngrams(string2, ngram_size)
+    if string1 == string2 do
+      1.0
+    else
+      ngrams1 = FastNgram.letter_ngrams(string1, ngram_size)
+      ngrams2 = FastNgram.letter_ngrams(string2, ngram_size)
 
-    sorensen_dice(ngrams1, ngrams2, options)
+      sorensen_dice(ngrams1, ngrams2, options)
+    end
   end
 
   def sorensen_dice(list1, list2, options) when is_list(list1) and is_list(list2) do
