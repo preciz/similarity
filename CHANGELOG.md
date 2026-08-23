@@ -11,6 +11,8 @@ Release dates are based on the [Hex.pm release history](https://hex.pm/packages/
 ### Added
 
 - Added Credo 1.7.19 for strict static analysis in development and test environments.
+- Added StreamData property tests for similarity invariants, Unicode n-grams,
+  vector lengths, and cosine stream pair generation.
 
 ### Changed
 

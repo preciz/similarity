@@ -31,7 +31,8 @@ defmodule Similarity.MixProject do
       {:siphash, "~> 3.0"},
       {:ex_doc, "~> 0.40.3", only: :dev, runtime: false},
       {:benchee, "~> 1.5", only: :dev},
-      {:credo, "~> 1.7.19", only: [:dev, :test], runtime: false}
+      {:credo, "~> 1.7.19", only: [:dev, :test], runtime: false},
+      {:stream_data, "~> 1.3.0", only: :test}
     ]
   end
 
