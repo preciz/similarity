@@ -29,6 +29,11 @@ Release dates are based on the [Hex.pm release history](https://hex.pm/packages/
 - Reduced cosine vector calculations to one numeric pass, removed intermediate
   sets from attribute comparisons, and made cosine streams element-lazy.
 
+### Removed
+
+- Removed the undocumented `Similarity.Cosine.stream_next/1` and
+  `Similarity.Cosine.do_add_attributes/3` implementation helpers from the public API.
+
 ### Fixed
 
 - Corrected a typo in the `Similarity.Cosine` module documentation.

@@ -101,32 +101,27 @@ defmodule Similarity.Cosine do
     )
   end
 
-  @doc false
-  def stream_next({[], _map}) do
+  defp stream_next({[], _map}) do
     {:halt, nil}
   end
 
-  @doc false
-  def stream_next({[_last], _map}) do
+  defp stream_next({[_last], _map}) do
     {:halt, nil}
   end
 
-  @doc false
-  def stream_next({[left_id, right_id | remaining_ids], map}) do
+  defp stream_next({[left_id, right_id | remaining_ids], map}) do
     next_ids = [right_id | remaining_ids]
 
     {[{left_id, right_id, do_between(map, left_id, right_id)}],
      {left_id, remaining_ids, next_ids, map}}
   end
 
-  @doc false
-  def stream_next({left_id, [right_id | remaining_ids], next_ids, map}) do
+  defp stream_next({left_id, [right_id | remaining_ids], next_ids, map}) do
     {[{left_id, right_id, do_between(map, left_id, right_id)}],
      {left_id, remaining_ids, next_ids, map}}
   end
 
-  @doc false
-  def stream_next({_left_id, [], next_ids, map}) do
+  defp stream_next({_left_id, [], next_ids, map}) do
     stream_next({next_ids, map})
   end
 
@@ -145,13 +140,11 @@ defmodule Similarity.Cosine do
     }
   end
 
-  @doc false
-  def do_add_attributes([], attributes_counter, attributes_map) do
+  defp do_add_attributes([], attributes_counter, attributes_map) do
     {attributes_counter, attributes_map}
   end
 
-  @doc false
-  def do_add_attributes([{key, _value} | tl], attributes_counter, attributes_map) do
+  defp do_add_attributes([{key, _value} | tl], attributes_counter, attributes_map) do
     if Map.has_key?(attributes_map, key) do
       do_add_attributes(tl, attributes_counter, attributes_map)
     else
