@@ -54,16 +54,21 @@ defmodule Similarity.Cosine do
     keys_a = attributes_a |> Enum.map(fn {k, _v} -> k end) |> MapSet.new()
     keys_b = attributes_b |> Enum.map(fn {k, _v} -> k end) |> MapSet.new()
 
-    values_a = index_attributes(attributes_a)
-    values_b = index_attributes(attributes_b)
+    common_keys = MapSet.intersection(keys_a, keys_b)
 
-    {common_attributes_a, common_attributes_b} =
-      keys_a
-      |> MapSet.intersection(keys_b)
-      |> Enum.map(fn key -> {Map.fetch!(values_a, key), Map.fetch!(values_b, key)} end)
-      |> Enum.unzip()
+    if MapSet.size(common_keys) == 0 do
+      0.0
+    else
+      values_a = index_attributes(attributes_a)
+      values_b = index_attributes(attributes_b)
 
-    Similarity.cosine_srol(common_attributes_a, common_attributes_b)
+      {common_attributes_a, common_attributes_b} =
+        common_keys
+        |> Enum.map(fn key -> {Map.fetch!(values_a, key), Map.fetch!(values_b, key)} end)
+        |> Enum.unzip()
+
+      Similarity.cosine_srol(common_attributes_a, common_attributes_b)
+    end
   end
 
   # Reversing retains the first value for duplicate keys, matching Enum.find/2.
@@ -86,6 +91,11 @@ defmodule Similarity.Cosine do
       &stream_next/1,
       fn _ -> nil end
     )
+  end
+
+  @doc false
+  def stream_next({[], _map}) do
+    {:halt, nil}
   end
 
   @doc false

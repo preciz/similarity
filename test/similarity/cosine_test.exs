@@ -75,6 +75,14 @@ defmodule Similarity.CosineTest do
     assert Cosine.between(s, "a", "b") == Similarity.cosine_srol([1, 1], [1, 1])
   end
 
+  test "between entries without shared attributes is zero" do
+    s = Cosine.new()
+    s = Cosine.add(s, "a", [{"x", 1}])
+    s = Cosine.add(s, "b", [{"y", 1}])
+
+    assert Cosine.between(s, "a", "b") == 0.0
+  end
+
   test "stream" do
     s = Cosine.new()
     s = Cosine.add(s, "a", [{"attr", 1}])
@@ -84,5 +92,9 @@ defmodule Similarity.CosineTest do
     result = Cosine.stream(s) |> Enum.to_list()
     assert length(result) == 3
     assert Enum.all?(result, fn {_, _, similarity} -> is_float(similarity) end)
+  end
+
+  test "stream with no entries is empty" do
+    assert Cosine.new() |> Cosine.stream() |> Enum.to_list() == []
   end
 end
