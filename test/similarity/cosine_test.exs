@@ -67,6 +67,14 @@ defmodule Similarity.CosineTest do
     assert Cosine.between(s, "a", "b") == 1.0
   end
 
+  test "between uses the first value of a duplicated attribute" do
+    s = Cosine.new()
+    s = Cosine.add(s, "a", [{"x", 1}, {"x", 100}, {"y", 1}])
+    s = Cosine.add(s, "b", [{"x", 1}, {"y", 1}])
+
+    assert Cosine.between(s, "a", "b") == Similarity.cosine_srol([1, 1], [1, 1])
+  end
+
   test "stream" do
     s = Cosine.new()
     s = Cosine.add(s, "a", [{"attr", 1}])

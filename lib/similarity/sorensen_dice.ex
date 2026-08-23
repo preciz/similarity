@@ -59,11 +59,11 @@ defmodule Similarity.SorensenDice do
   def sorensen_dice(mapset1, mapset2, _options)
       when is_struct(mapset1, MapSet) and is_struct(mapset2, MapSet) do
     intersect = MapSet.intersection(mapset1, mapset2)
-    intersect_length = Enum.count(intersect)
+    intersect_length = MapSet.size(intersect)
 
     case intersect_length do
       0 -> 0.0
-      _ -> 2 * intersect_length / (Enum.count(mapset1) + Enum.count(mapset2))
+      _ -> 2 * intersect_length / (MapSet.size(mapset1) + MapSet.size(mapset2))
     end
   end
 end

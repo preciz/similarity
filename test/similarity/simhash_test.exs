@@ -64,4 +64,14 @@ defmodule Similarity.SimhashTest do
                :crypto.hash(:sha256, char)
     end
   end
+
+  test "binary hashes contain the same bits as list hashes" do
+    for hash_function <- [:siphash, :md5, :sha256] do
+      options = [ngram_size: 3, hash_function: hash_function]
+      bits = Simhash.hash("the quick brown fox", options)
+      binary = Simhash.hash("the quick brown fox", [{:return_type, :binary} | options])
+
+      assert for(<<bit::1 <- binary>>, do: bit) == bits
+    end
+  end
 end

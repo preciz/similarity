@@ -48,28 +48,26 @@ defmodule Similarity.Cosine do
   end
 
   defp do_between(map, id_a, id_b) do
-    attributes_a = map |> Map.get(id_a)
-    attributes_b = map |> Map.get(id_b)
+    attributes_a = Map.get(map, id_a)
+    attributes_b = Map.get(map, id_b)
 
     keys_a = attributes_a |> Enum.map(fn {k, _v} -> k end) |> MapSet.new()
     keys_b = attributes_b |> Enum.map(fn {k, _v} -> k end) |> MapSet.new()
 
-    common_attributes_keys = MapSet.intersection(keys_a, keys_b)
+    values_a = index_attributes(attributes_a)
+    values_b = index_attributes(attributes_b)
 
-    common_attributes_a =
-      common_attributes_keys
-      |> Enum.map(fn common_key ->
-        Enum.find(attributes_a, fn {k, _v} -> k == common_key end) |> elem(1)
-      end)
-
-    common_attributes_b =
-      common_attributes_keys
-      |> Enum.map(fn common_key ->
-        Enum.find(attributes_b, fn {k, _v} -> k == common_key end) |> elem(1)
-      end)
+    {common_attributes_a, common_attributes_b} =
+      keys_a
+      |> MapSet.intersection(keys_b)
+      |> Enum.map(fn key -> {Map.fetch!(values_a, key), Map.fetch!(values_b, key)} end)
+      |> Enum.unzip()
 
     Similarity.cosine_srol(common_attributes_a, common_attributes_b)
   end
+
+  # Reversing retains the first value for duplicate keys, matching Enum.find/2.
+  defp index_attributes(attributes), do: attributes |> Enum.reverse() |> Map.new()
 
   @doc """
   Returns a stream of all unique pairs of similarities in `%Cosine{}.map`
